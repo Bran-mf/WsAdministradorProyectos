@@ -5,7 +5,7 @@
  */
 package webService;
 
-import WebServiceTarea2.model.TblProyecto;
+import WebServiceTarea2.model.Proyecto;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -29,7 +29,7 @@ public class WS {
      * Web service operation
      */
     @WebMethod(operationName = "guardar")
-    public String guardar(@WebParam(name = "usuario") TblProyecto usuario) {
+    public String guardar(@WebParam(name = "usuario") Proyecto usuario) {
         //TODO write your implementation code here:
         return null;
     }
