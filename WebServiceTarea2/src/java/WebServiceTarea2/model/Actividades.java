@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,24 +25,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Bran
+ * @author Jose Pablo Bermudez
  */
 @Entity
 @Table(name = "TBL_ACTIVIDADES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblActividades.findAll", query = "SELECT t FROM TblActividades t")
-    , @NamedQuery(name = "TblActividades.findByActId", query = "SELECT t FROM TblActividades t WHERE t.actId = :actId")
-    , @NamedQuery(name = "TblActividades.findByActDescripcion", query = "SELECT t FROM TblActividades t WHERE t.actDescripcion = :actDescripcion")
-    , @NamedQuery(name = "TblActividades.findByActEncargado", query = "SELECT t FROM TblActividades t WHERE t.actEncargado = :actEncargado")
-    , @NamedQuery(name = "TblActividades.findByActEstado", query = "SELECT t FROM TblActividades t WHERE t.actEstado = :actEstado")
-    , @NamedQuery(name = "TblActividades.findByActInicioreal", query = "SELECT t FROM TblActividades t WHERE t.actInicioreal = :actInicioreal")
-    , @NamedQuery(name = "TblActividades.findByActInicioesperado", query = "SELECT t FROM TblActividades t WHERE t.actInicioesperado = :actInicioesperado")
-    , @NamedQuery(name = "TblActividades.findByActFinalreal", query = "SELECT t FROM TblActividades t WHERE t.actFinalreal = :actFinalreal")
-    , @NamedQuery(name = "TblActividades.findByActFinalesperado", query = "SELECT t FROM TblActividades t WHERE t.actFinalesperado = :actFinalesperado")
-    , @NamedQuery(name = "TblActividades.findByActOrden", query = "SELECT t FROM TblActividades t WHERE t.actOrden = :actOrden")
-    , @NamedQuery(name = "TblActividades.findByActVersion", query = "SELECT t FROM TblActividades t WHERE t.actVersion = :actVersion")})
-public class TblActividades implements Serializable {
+    @NamedQuery(name = "Actividades.findAll", query = "SELECT a FROM Actividades a")
+    , @NamedQuery(name = "Actividades.findByActId", query = "SELECT a FROM Actividades a WHERE a.actId = :actId")
+    , @NamedQuery(name = "Actividades.findByActDescripcion", query = "SELECT a FROM Actividades a WHERE a.actDescripcion = :actDescripcion")
+    , @NamedQuery(name = "Actividades.findByActEncargado", query = "SELECT a FROM Actividades a WHERE a.actEncargado = :actEncargado")
+    , @NamedQuery(name = "Actividades.findByActEstado", query = "SELECT a FROM Actividades a WHERE a.actEstado = :actEstado")
+    , @NamedQuery(name = "Actividades.findByActInicioreal", query = "SELECT a FROM Actividades a WHERE a.actInicioreal = :actInicioreal")
+    , @NamedQuery(name = "Actividades.findByActInicioesperado", query = "SELECT a FROM Actividades a WHERE a.actInicioesperado = :actInicioesperado")
+    , @NamedQuery(name = "Actividades.findByActFinalreal", query = "SELECT a FROM Actividades a WHERE a.actFinalreal = :actFinalreal")
+    , @NamedQuery(name = "Actividades.findByActFinalesperado", query = "SELECT a FROM Actividades a WHERE a.actFinalesperado = :actFinalesperado")
+    , @NamedQuery(name = "Actividades.findByActOrden", query = "SELECT a FROM Actividades a WHERE a.actOrden = :actOrden")
+    , @NamedQuery(name = "Actividades.findByActVersion", query = "SELECT a FROM Actividades a WHERE a.actVersion = :actVersion")})
+public class Actividades implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -79,17 +80,17 @@ public class TblActividades implements Serializable {
     @Column(name = "ACT_VERSION")
     private BigInteger actVersion;
     @JoinColumn(name = "PRY_ID", referencedColumnName = "PRY_ID")
-    @ManyToOne
-    private TblProyecto pryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Proyecto pryId;
 
-    public TblActividades() {
+    public Actividades() {
     }
 
-    public TblActividades(BigDecimal actId) {
+    public Actividades(BigDecimal actId) {
         this.actId = actId;
     }
 
-    public TblActividades(BigDecimal actId, String actDescripcion, String actEncargado, String actEstado, Date actInicioesperado, Date actFinalesperado, BigInteger actOrden, BigInteger actVersion) {
+    public Actividades(BigDecimal actId, String actDescripcion, String actEncargado, String actEstado, Date actInicioesperado, Date actFinalesperado, BigInteger actOrden, BigInteger actVersion) {
         this.actId = actId;
         this.actDescripcion = actDescripcion;
         this.actEncargado = actEncargado;
@@ -180,11 +181,11 @@ public class TblActividades implements Serializable {
         this.actVersion = actVersion;
     }
 
-    public TblProyecto getPryId() {
+    public Proyecto getPryId() {
         return pryId;
     }
 
-    public void setPryId(TblProyecto pryId) {
+    public void setPryId(Proyecto pryId) {
         this.pryId = pryId;
     }
 
@@ -198,10 +199,10 @@ public class TblActividades implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblActividades)) {
+        if (!(object instanceof Actividades)) {
             return false;
         }
-        TblActividades other = (TblActividades) object;
+        Actividades other = (Actividades) object;
         if ((this.actId == null && other.actId != null) || (this.actId != null && !this.actId.equals(other.actId))) {
             return false;
         }
@@ -210,7 +211,7 @@ public class TblActividades implements Serializable {
 
     @Override
     public String toString() {
-        return "WebServiceTarea2.model.TblActividades[ actId=" + actId + " ]";
+        return "WebServiceTarea2.model.Actividades[ actId=" + actId + " ]";
     }
     
 }

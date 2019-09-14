@@ -13,6 +13,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,28 +26,28 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Bran
+ * @author Jose Pablo Bermudez
  */
 @Entity
 @Table(name = "TBL_PROYECTO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblProyecto.findAll", query = "SELECT t FROM TblProyecto t")
-    , @NamedQuery(name = "TblProyecto.findByPryId", query = "SELECT t FROM TblProyecto t WHERE t.pryId = :pryId")
-    , @NamedQuery(name = "TblProyecto.findByPryNombre", query = "SELECT t FROM TblProyecto t WHERE t.pryNombre = :pryNombre")
-    , @NamedQuery(name = "TblProyecto.findByPryPatrocinador", query = "SELECT t FROM TblProyecto t WHERE t.pryPatrocinador = :pryPatrocinador")
-    , @NamedQuery(name = "TblProyecto.findByPryLiderusuario", query = "SELECT t FROM TblProyecto t WHERE t.pryLiderusuario = :pryLiderusuario")
-    , @NamedQuery(name = "TblProyecto.findByPyrLidertecnico", query = "SELECT t FROM TblProyecto t WHERE t.pyrLidertecnico = :pyrLidertecnico")
-    , @NamedQuery(name = "TblProyecto.findByPyrInicioesperado", query = "SELECT t FROM TblProyecto t WHERE t.pyrInicioesperado = :pyrInicioesperado")
-    , @NamedQuery(name = "TblProyecto.findByPryInicioreal", query = "SELECT t FROM TblProyecto t WHERE t.pryInicioreal = :pryInicioreal")
-    , @NamedQuery(name = "TblProyecto.findByPryFinalesperado", query = "SELECT t FROM TblProyecto t WHERE t.pryFinalesperado = :pryFinalesperado")
-    , @NamedQuery(name = "TblProyecto.findByPryFinalreal", query = "SELECT t FROM TblProyecto t WHERE t.pryFinalreal = :pryFinalreal")
-    , @NamedQuery(name = "TblProyecto.findByPryEstado", query = "SELECT t FROM TblProyecto t WHERE t.pryEstado = :pryEstado")
-    , @NamedQuery(name = "TblProyecto.findByPryCorreousuario", query = "SELECT t FROM TblProyecto t WHERE t.pryCorreousuario = :pryCorreousuario")
-    , @NamedQuery(name = "TblProyecto.findByPryCorreotenico", query = "SELECT t FROM TblProyecto t WHERE t.pryCorreotenico = :pryCorreotenico")
-    , @NamedQuery(name = "TblProyecto.findByPryCorreopatrocinador", query = "SELECT t FROM TblProyecto t WHERE t.pryCorreopatrocinador = :pryCorreopatrocinador")
-    , @NamedQuery(name = "TblProyecto.findByPryVersion", query = "SELECT t FROM TblProyecto t WHERE t.pryVersion = :pryVersion")})
-public class TblProyecto implements Serializable {
+    @NamedQuery(name = "Proyecto.findAll", query = "SELECT p FROM Proyecto p")
+    , @NamedQuery(name = "Proyecto.findByPryId", query = "SELECT p FROM Proyecto p WHERE p.pryId = :pryId")
+    , @NamedQuery(name = "Proyecto.findByPryNombre", query = "SELECT p FROM Proyecto p WHERE p.pryNombre = :pryNombre")
+    , @NamedQuery(name = "Proyecto.findByPryPatrocinador", query = "SELECT p FROM Proyecto p WHERE p.pryPatrocinador = :pryPatrocinador")
+    , @NamedQuery(name = "Proyecto.findByPryLiderusuario", query = "SELECT p FROM Proyecto p WHERE p.pryLiderusuario = :pryLiderusuario")
+    , @NamedQuery(name = "Proyecto.findByPyrLidertecnico", query = "SELECT p FROM Proyecto p WHERE p.pyrLidertecnico = :pyrLidertecnico")
+    , @NamedQuery(name = "Proyecto.findByPyrInicioesperado", query = "SELECT p FROM Proyecto p WHERE p.pyrInicioesperado = :pyrInicioesperado")
+    , @NamedQuery(name = "Proyecto.findByPryInicioreal", query = "SELECT p FROM Proyecto p WHERE p.pryInicioreal = :pryInicioreal")
+    , @NamedQuery(name = "Proyecto.findByPryFinalesperado", query = "SELECT p FROM Proyecto p WHERE p.pryFinalesperado = :pryFinalesperado")
+    , @NamedQuery(name = "Proyecto.findByPryFinalreal", query = "SELECT p FROM Proyecto p WHERE p.pryFinalreal = :pryFinalreal")
+    , @NamedQuery(name = "Proyecto.findByPryEstado", query = "SELECT p FROM Proyecto p WHERE p.pryEstado = :pryEstado")
+    , @NamedQuery(name = "Proyecto.findByPryCorreousuario", query = "SELECT p FROM Proyecto p WHERE p.pryCorreousuario = :pryCorreousuario")
+    , @NamedQuery(name = "Proyecto.findByPryCorreotenico", query = "SELECT p FROM Proyecto p WHERE p.pryCorreotenico = :pryCorreotenico")
+    , @NamedQuery(name = "Proyecto.findByPryCorreopatrocinador", query = "SELECT p FROM Proyecto p WHERE p.pryCorreopatrocinador = :pryCorreopatrocinador")
+    , @NamedQuery(name = "Proyecto.findByPryVersion", query = "SELECT p FROM Proyecto p WHERE p.pryVersion = :pryVersion")})
+public class Proyecto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -95,19 +96,19 @@ public class TblProyecto implements Serializable {
     @Basic(optional = false)
     @Column(name = "PRY_VERSION")
     private BigInteger pryVersion;
-    @OneToMany(mappedBy = "pryId")
-    private List<TblActividades> tblActividadesList;
-    @OneToMany(mappedBy = "pryId")
-    private List<TblSeguimiento> tblSeguimientoList;
+    @OneToMany(mappedBy = "pryId", fetch = FetchType.LAZY)
+    private List<Actividades> actividadesList;
+    @OneToMany(mappedBy = "pryId", fetch = FetchType.LAZY)
+    private List<Seguimiento> seguimientoList;
 
-    public TblProyecto() {
+    public Proyecto() {
     }
 
-    public TblProyecto(BigDecimal pryId) {
+    public Proyecto(BigDecimal pryId) {
         this.pryId = pryId;
     }
 
-    public TblProyecto(BigDecimal pryId, String pryNombre, String pryPatrocinador, String pryLiderusuario, String pyrLidertecnico, Date pyrInicioesperado, Date pryFinalesperado, String pryEstado, String pryCorreousuario, String pryCorreotenico, String pryCorreopatrocinador, BigInteger pryVersion) {
+    public Proyecto(BigDecimal pryId, String pryNombre, String pryPatrocinador, String pryLiderusuario, String pyrLidertecnico, Date pyrInicioesperado, Date pryFinalesperado, String pryEstado, String pryCorreousuario, String pryCorreotenico, String pryCorreopatrocinador, BigInteger pryVersion) {
         this.pryId = pryId;
         this.pryNombre = pryNombre;
         this.pryPatrocinador = pryPatrocinador;
@@ -235,21 +236,21 @@ public class TblProyecto implements Serializable {
     }
 
     @XmlTransient
-    public List<TblActividades> getTblActividadesList() {
-        return tblActividadesList;
+    public List<Actividades> getActividadesList() {
+        return actividadesList;
     }
 
-    public void setTblActividadesList(List<TblActividades> tblActividadesList) {
-        this.tblActividadesList = tblActividadesList;
+    public void setActividadesList(List<Actividades> actividadesList) {
+        this.actividadesList = actividadesList;
     }
 
     @XmlTransient
-    public List<TblSeguimiento> getTblSeguimientoList() {
-        return tblSeguimientoList;
+    public List<Seguimiento> getSeguimientoList() {
+        return seguimientoList;
     }
 
-    public void setTblSeguimientoList(List<TblSeguimiento> tblSeguimientoList) {
-        this.tblSeguimientoList = tblSeguimientoList;
+    public void setSeguimientoList(List<Seguimiento> seguimientoList) {
+        this.seguimientoList = seguimientoList;
     }
 
     @Override
@@ -262,10 +263,10 @@ public class TblProyecto implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblProyecto)) {
+        if (!(object instanceof Proyecto)) {
             return false;
         }
-        TblProyecto other = (TblProyecto) object;
+        Proyecto other = (Proyecto) object;
         if ((this.pryId == null && other.pryId != null) || (this.pryId != null && !this.pryId.equals(other.pryId))) {
             return false;
         }
@@ -274,7 +275,7 @@ public class TblProyecto implements Serializable {
 
     @Override
     public String toString() {
-        return "WebServiceTarea2.model.TblProyecto[ pryId=" + pryId + " ]";
+        return "WebServiceTarea2.model.Proyecto[ pryId=" + pryId + " ]";
     }
     
 }

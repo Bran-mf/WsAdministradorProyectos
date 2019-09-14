@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,18 +25,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Bran
+ * @author Jose Pablo Bermudez
  */
 @Entity
 @Table(name = "TBL_SEGUIMIENTO")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TblSeguimiento.findAll", query = "SELECT t FROM TblSeguimiento t")
-    , @NamedQuery(name = "TblSeguimiento.findBySegId", query = "SELECT t FROM TblSeguimiento t WHERE t.segId = :segId")
-    , @NamedQuery(name = "TblSeguimiento.findBySegFecha", query = "SELECT t FROM TblSeguimiento t WHERE t.segFecha = :segFecha")
-    , @NamedQuery(name = "TblSeguimiento.findBySegAvance", query = "SELECT t FROM TblSeguimiento t WHERE t.segAvance = :segAvance")
-    , @NamedQuery(name = "TblSeguimiento.findBySegVersion", query = "SELECT t FROM TblSeguimiento t WHERE t.segVersion = :segVersion")})
-public class TblSeguimiento implements Serializable {
+    @NamedQuery(name = "Seguimiento.findAll", query = "SELECT s FROM Seguimiento s")
+    , @NamedQuery(name = "Seguimiento.findBySegId", query = "SELECT s FROM Seguimiento s WHERE s.segId = :segId")
+    , @NamedQuery(name = "Seguimiento.findBySegFecha", query = "SELECT s FROM Seguimiento s WHERE s.segFecha = :segFecha")
+    , @NamedQuery(name = "Seguimiento.findBySegAvance", query = "SELECT s FROM Seguimiento s WHERE s.segAvance = :segAvance")
+    , @NamedQuery(name = "Seguimiento.findBySegVersion", query = "SELECT s FROM Seguimiento s WHERE s.segVersion = :segVersion")})
+public class Seguimiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -54,17 +55,17 @@ public class TblSeguimiento implements Serializable {
     @Column(name = "SEG_VERSION")
     private BigInteger segVersion;
     @JoinColumn(name = "PRY_ID", referencedColumnName = "PRY_ID")
-    @ManyToOne
-    private TblProyecto pryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Proyecto pryId;
 
-    public TblSeguimiento() {
+    public Seguimiento() {
     }
 
-    public TblSeguimiento(BigDecimal segId) {
+    public Seguimiento(BigDecimal segId) {
         this.segId = segId;
     }
 
-    public TblSeguimiento(BigDecimal segId, Date segFecha, BigInteger segAvance, BigInteger segVersion) {
+    public Seguimiento(BigDecimal segId, Date segFecha, BigInteger segAvance, BigInteger segVersion) {
         this.segId = segId;
         this.segFecha = segFecha;
         this.segAvance = segAvance;
@@ -103,11 +104,11 @@ public class TblSeguimiento implements Serializable {
         this.segVersion = segVersion;
     }
 
-    public TblProyecto getPryId() {
+    public Proyecto getPryId() {
         return pryId;
     }
 
-    public void setPryId(TblProyecto pryId) {
+    public void setPryId(Proyecto pryId) {
         this.pryId = pryId;
     }
 
@@ -121,10 +122,10 @@ public class TblSeguimiento implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TblSeguimiento)) {
+        if (!(object instanceof Seguimiento)) {
             return false;
         }
-        TblSeguimiento other = (TblSeguimiento) object;
+        Seguimiento other = (Seguimiento) object;
         if ((this.segId == null && other.segId != null) || (this.segId != null && !this.segId.equals(other.segId))) {
             return false;
         }
@@ -133,7 +134,7 @@ public class TblSeguimiento implements Serializable {
 
     @Override
     public String toString() {
-        return "WebServiceTarea2.model.TblSeguimiento[ segId=" + segId + " ]";
+        return "WebServiceTarea2.model.Seguimiento[ segId=" + segId + " ]";
     }
     
 }
