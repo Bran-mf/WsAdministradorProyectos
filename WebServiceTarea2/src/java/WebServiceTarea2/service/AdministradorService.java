@@ -9,6 +9,7 @@ import WebServiceTarea2.model.Administrador;
 import WebServiceTarea2.model.AdministradorDto;
 import WebServiceTarea2.util.CodigoRespuesta;
 import WebServiceTarea2.util.Respuesta;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.LocalBean;
@@ -26,42 +27,46 @@ import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 @Stateless
 @LocalBean
 public class AdministradorService {
+
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em;
-    public Respuesta validarAdministrador(String usuario, String clave){
-       try{
-          Query query = em.createNamedQuery("Administrador.findbyUsuClave",Administrador.class);
-          query.setParameter("usuario", usuario);
-          query.setParameter("clave", clave);
-          return  new Respuesta(true, CodigoRespuesta.CORRECTO,"","","Administrador",new AdministradorDto((Administrador) query.getSingleResult()));
-       }catch(NoResultException ex){
-         return  new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"No existe un usuario con las credenciales ingresadas","alidar usuario No result exception");  
-       } catch(Exception es){
-           return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Ocurrio un error con la consulta","Error desconocido Exception");
-       }
-  }
-    public Respuesta cargarAdministradores(){
-        try{
-            Query query  = em.createNamedQuery("Administrador.findAll");
-            List<Administrador> adminsitradorList = query.getResultList();
-            List<AdministradorDto> administradorDtoList = new ArrayList<>();
-            for(Administrador administrador: adminsitradorList){
-                administradorDtoList.add(new AdministradorDto(administrador));
-            }
-            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","","Administradores",administradorDtoList);
-        }catch(NoResultException ex){
-            return new Respuesta (false,CodigoRespuesta.ERROR_NOENCONTRADO,"no existen adminsitradores en este momento","No ResultException");
-        } catch(Exception ex){
-            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepton");
+
+    public Respuesta validarAdministrador(String usuario, String clave) {
+        try {
+            Query query = em.createNamedQuery("Administrador.findbyUsuClave", Administrador.class);
+            query.setParameter("usuario", usuario);
+            query.setParameter("clave", clave);
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administrador", new AdministradorDto((Administrador) query.getSingleResult()));
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un usuario con las credenciales ingresadas", "alidar usuario No result exception");
+        } catch (Exception es) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error con la consulta", "Error desconocido Exception");
         }
     }
-    public Respuesta GuardarAdministrador(AdministradorDto administradorDto){
-        try{
+
+    public Respuesta cargarAdministradores() {
+        try {
+            Query query = em.createNamedQuery("Administrador.findAll");
+            List<Administrador> adminsitradorList = query.getResultList();
+            List<AdministradorDto> administradorDtoList = new ArrayList<>();
+            for (Administrador administrador : adminsitradorList) {
+                administradorDtoList.add(new AdministradorDto(administrador));
+            }
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administradores", administradorDtoList);
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no existen adminsitradores en este momento", "No ResultException");
+        } catch (Exception ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "error desconocido", "excepton");
+        }
+    }
+
+    public Respuesta GuardarAdministrador(AdministradorDto administradorDto) {
+        try {
             Administrador administrador;
-            if(administradorDto.getID()!= null &&administradorDto.getID()>0){
+            if (administradorDto.getID() != null && administradorDto.getID() > 0) {
                 administrador = em.find(Administrador.class, administradorDto.getID());
-                if(administrador ==null){
-                    return new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"No se encontro el empleado a modificar","guardar empleado NoResult");
+                if (administrador == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontro el empleado a modificar", "guardar empleado NoResult");
                 }
                 administrador.actualizarAdministrador(administradorDto);
                 em.persist(administrador);
@@ -70,30 +75,34 @@ public class AdministradorService {
                 em.persist(administrador);
             }
             em.flush();
-            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","","administrador",new AdministradorDto(administrador));
-        } catch (Exception ex){
-            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Ocurrio un error al guardar el empleado","guardar empleado");
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "administrador", new AdministradorDto(administrador));
+        } catch (Exception ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el empleado", "guardar empleado");
         }
-        
+
     }
-    public Respuesta eliminarAdmnistrador(Long id){
-        try{
+
+    public Respuesta eliminarAdmnistrador(Long id) {
+        try {
             Administrador administrador;
-            if(id!=0 && id>0){
+            if (id != 0 && id > 0) {
                 administrador = em.find(Administrador.class, id);
-                if(administrador==null){
-                    return new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"no se encontro el adminsitrador que desea eliminar","Objetivo a eliminar no encontrado");
-                    
+                if (administrador == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no se encontro el adminsitrador que desea eliminar", "Objetivo a eliminar no encontrado");
+
                 }
                 em.remove(administrador);
-                
+
             } else {
-                return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Debe de seleccionar un empleado a eliminar ","no se entro un id valido");
+                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Debe de seleccionar un empleado a eliminar ", "no se entro un id valido");
             }
             em.flush();
-            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","");
-            
-        }catch(Exception ex){
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "");
+
+        } catch (Exception ex) {
+            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {// relaciones con otras entidades
+                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "El Administrador tiene relaciones con otros registros, no se pudo eliminar", "depedenciade entidades");
+            }
             return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
         }
     }
