@@ -9,6 +9,8 @@ import WebServiceTarea2.model.Administrador;
 import WebServiceTarea2.model.AdministradorDto;
 import WebServiceTarea2.util.CodigoRespuesta;
 import WebServiceTarea2.util.Respuesta;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,9 +27,9 @@ import javax.persistence.Query;
 public class AdministradorService {
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em;
-    public Respuesta validarUsuario(String usuario, String clave){
+    public Respuesta validarAdministrador(String usuario, String clave){
        try{
-          Query query = em.createNamedQuery("Aminsitrador.findbyUsuClave",Administrador.class);
+          Query query = em.createNamedQuery("Administrador.findbyUsuClave",Administrador.class);
           query.setParameter("usuario", usuario);
           query.setParameter("clave", clave);
           return  new Respuesta(true, CodigoRespuesta.CORRECTO,"","","Administrador",new AdministradorDto((Administrador) query.getSingleResult()));
@@ -37,5 +39,41 @@ public class AdministradorService {
            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Ocurrio un error con la consulta","Error desconocido Exception");
        }
   }
+    public Respuesta cargarAdministradores(){
+        try{
+            Query query  = em.createNamedQuery("Administrador.findAll");
+            List<Administrador> adminsitradorList = query.getResultList();
+            List<AdministradorDto> administradorDtoList = new ArrayList<>();
+            for(Administrador administrador: adminsitradorList){
+                administradorDtoList.add(new AdministradorDto(administrador));
+            }
+            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","","Administradores",administradorDtoList);
+        }catch(NoResultException ex){
+            return new Respuesta (false,CodigoRespuesta.ERROR_NOENCONTRADO,"no existen adminsitradores en este momento","No ResultException");
+        } catch(Exception ex){
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepton");
+        }
+    }
+    public Respuesta GuardarAdministrador(AdministradorDto administradorDto){
+        try{
+            Administrador administrador;
+            if(administradorDto.getID()!= null &&administradorDto.getID()>0){
+                administrador = em.find(Administrador.class, administradorDto.getID());
+                if(administrador ==null){
+                    return new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"No se encontro el empleado a modificar","guardar empleado NoResult");
+                }
+                administrador.actualizarAdministrador(administradorDto);
+                em.persist(administrador);
+            } else {
+                administrador = new Administrador(administradorDto);
+                em.persist(administrador);
+            }
+            em.flush();
+            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","","administrador",new AdministradorDto(administrador));
+        } catch (Exception ex){
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Ocurrio un error al guardar el empleado","guardar empleado");
+        }
+        
+    }
     
 }
