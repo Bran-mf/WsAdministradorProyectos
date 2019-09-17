@@ -22,8 +22,8 @@ public class AdministradorService {
     private EntityManager em;
     public Respuesta validarUsuario(String usuario, String clave){
         return null;
-//        try{
-//            Query query = em.createNamedQuery("")
-//        }
+       try{
+          Query query = em.createNamedQuery("Administrador.")
+       }
   }
 }
