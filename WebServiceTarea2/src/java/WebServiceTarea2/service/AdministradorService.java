@@ -17,6 +17,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
 
 /**
  *
@@ -75,5 +76,25 @@ public class AdministradorService {
         }
         
     }
-    
+    public Respuesta eliminarAdmnistrador(Long id){
+        try{
+            Administrador administrador;
+            if(id!=0 && id>0){
+                administrador = em.find(Administrador.class, id);
+                if(administrador==null){
+                    return new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"no se encontro el adminsitrador que desea eliminar","Objetivo a eliminar no encontrado");
+                    
+                }
+                em.remove(administrador);
+                
+            } else {
+                return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Debe de seleccionar un empleado a eliminar ","no se entro un id valido");
+            }
+            em.flush();
+            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","");
+            
+        }catch(Exception ex){
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
+        }
+    }
 }
