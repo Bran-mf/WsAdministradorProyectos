@@ -5,33 +5,94 @@
  */
 package WebServiceTarea2.model;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import WebServiceTarea2.util.LocalDateAdapter;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
  * @author Jose Pablo Bermudez
  */
 public class ActividadesDto {
-    private BigDecimal id;
+    private Long id;
     private String descripcion;
+    private String encargado;
     private String estado;
-    private Date inicioEsperado;
-    private Date finalEsperado;
-    private BigInteger orden;
-    private BigInteger version;
-    private Date finalReal;
-    private Date inicioReal;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate inicioEsperado;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate finalEsperado;
+    private Integer orden;
+    private Long version;
+    private ProyectoDto proyecto;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate finalReal;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate inicioReal;
     //metodos
     //get and set
 
-    public BigDecimal getId() {
+    
+    public ActividadesDto(Long id, String descripcion, String estado, LocalDate inicioEsperado, LocalDate finalEsperado, Integer orden, Long version) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.estado = estado;
+        this.inicioEsperado = inicioEsperado;
+        this.finalEsperado = finalEsperado;
+        this.orden = orden;
+        this.version = version;
+    }
+    //constructores
+    public ActividadesDto() {
+    }
+    public ActividadesDto(Actividades actividades){
+        this.id =  actividades.getActId();
+        this.descripcion = actividades.getActDescripcion();
+        this.estado = actividades.getActEstado();
+        this.inicioEsperado = actividades.getActInicioesperado().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        this.finalEsperado = actividades.getActFinalesperado().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        this.finalReal = actividades.getActFinalreal().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        this.inicioReal = actividades.getActInicioreal().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        this.orden = actividades.getActOrden();
+        this.version = actividades.getActVersion();
+        this.encargado = actividades.getActEncargado();
+        this.proyecto = new ProyectoDto(actividades.getPryId());
+    }
+    /*public Actividades getModel(){
+        return new Actividades(id, descripcion, estado, estado, inicioEsperado, finalEsperado, orden, version);
+    }*/
+
+    public ProyectoDto getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(ProyectoDto proyecto) {
+        this.proyecto = proyecto;
+    }
+    
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+     public String getEncargado() {
+        return encargado;
+    }
+
+    public void setEncargado(String encargado) {
+        this.encargado = encargado;
     }
 
     public String getDescripcion() {
@@ -50,77 +111,55 @@ public class ActividadesDto {
         this.estado = estado;
     }
 
-    public Date getInicioEsperado() {
+    public LocalDate getInicioEsperado() {
         return inicioEsperado;
     }
 
-    public void setInicioEsperado(Date inicioEsperado) {
+    public void setInicioEsperado(LocalDate inicioEsperado) {
         this.inicioEsperado = inicioEsperado;
     }
 
-    public Date getFinalEsperado() {
+    public LocalDate getFinalEsperado() {
         return finalEsperado;
     }
 
-    public void setFinalEsperado(Date finalEsperado) {
+    public void setFinalEsperado(LocalDate finalEsperado) {
         this.finalEsperado = finalEsperado;
     }
 
-    public BigInteger getOrden() {
+    public Integer getOrden() {
         return orden;
     }
 
-    public void setOrden(BigInteger orden) {
+    public void setOrden(Integer orden) {
         this.orden = orden;
     }
 
-    public BigInteger getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigInteger version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public Date getFinalReal() {
+    public LocalDate getFinalReal() {
         return finalReal;
     }
 
-    public void setFinalReal(Date finalReal) {
+    public void setFinalReal(LocalDate finalReal) {
         this.finalReal = finalReal;
     }
 
-    public Date getInicioReal() {
+    public LocalDate getInicioReal() {
         return inicioReal;
     }
 
-    public void setInicioReal(Date inicioReal) {
+    public void setInicioReal(LocalDate inicioReal) {
         this.inicioReal = inicioReal;
     }
-    //constructores
+    
 
-    public ActividadesDto() {
-    }
-
-    public ActividadesDto(BigDecimal id, String descripcion, String estado, Date inicioEsperado, Date finalEsperado, BigInteger orden, BigInteger version) {
-        this.id = id;
-        this.descripcion = descripcion;
-        this.estado = estado;
-        this.inicioEsperado = inicioEsperado;
-        this.finalEsperado = finalEsperado;
-        this.orden = orden;
-        this.version = version;
-    }
-    public ActividadesDto(Actividades actividades){
-        this.id =  actividades.getActId();
-        this.descripcion = actividades.getActDescripcion();
-        this.estado = actividades.getActEstado();
-        this.inicioEsperado = actividades.getActInicioesperado();
-        this.finalEsperado = actividades.getActFinalesperado();
-        this.orden = actividades.getActOrden();
-        this.version = actividades.getActVersion();
-    }
-    public Actividades getModel(){
-        return new Actividades(id, descripcion, estado, estado, inicioEsperado, finalEsperado, orden, version);
-    }
+    
+    
 }

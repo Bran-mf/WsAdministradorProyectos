@@ -5,8 +5,6 @@
  */
 package WebServiceTarea2.model;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -14,19 +12,41 @@ import java.util.Date;
  * @author Jose Pablo Bermudez
  */
 public class SeguimientoDto {
-    private BigDecimal id;
+    private Long id;
     private Date fecha; //dia en que se hizo el seguimiento
-    private BigInteger avanse; //% del avanse
-    private BigInteger version;
-    Proyecto proyecto;
+    private Double avance; //% del avance
+    private Long version;
+    ProyectoDto proyecto;
+
+    //constructores
+
+    public SeguimientoDto() {
+    }
+
+    public SeguimientoDto(Long id, Date fecha, Double avance, Long version, ProyectoDto proyecto) {
+        this.id = id;
+        this.fecha = fecha;
+        this.avance = avance;
+        this.version = version;
+        this.proyecto = proyecto;
+    }
+    public SeguimientoDto(Seguimiento seguimiento){
+        this.id=seguimiento.getSegId();
+        this.fecha = seguimiento.getSegFecha();
+        this.avance= seguimiento.getSegAvance();
+        this.version= seguimiento.getSegVersion();
+        this.proyecto=  new ProyectoDto(seguimiento.getPryId());
+    }
+    public Seguimiento getModel(){
+        return new Seguimiento(id, fecha, avance, version);
+    }
     //metodos
     //get and set
-
-    public BigDecimal getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,50 +58,29 @@ public class SeguimientoDto {
         this.fecha = fecha;
     }
 
-    public BigInteger getAvanse() {
-        return avanse;
+    public Double getAvance() {
+        return avance;
     }
 
-    public void setAvanse(BigInteger avanse) {
-        this.avanse = avanse;
+    public void setAvance(Double avance) {
+        this.avance = avance;
     }
 
-    public BigInteger getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigInteger version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public Proyecto getProyecto() {
+    public ProyectoDto getProyecto() {
         return proyecto;
     }
 
-    public void setProyecto(Proyecto proyecto) {
+    public void setProyecto(ProyectoDto proyecto) {
         this.proyecto = proyecto;
     }
-    //constructores
-
-    public SeguimientoDto() {
-    }
-
-    public SeguimientoDto(BigDecimal id, Date fecha, BigInteger avanse, BigInteger version, Proyecto proyecto) {
-        this.id = id;
-        this.fecha = fecha;
-        this.avanse = avanse;
-        this.version = version;
-        this.proyecto = proyecto;
-    }
-    public SeguimientoDto(Seguimiento seguimiento){
-        this.id=seguimiento.getSegId();
-        this.fecha = seguimiento.getSegFecha();
-        this.avanse= seguimiento.getSegAvance();
-        this.version= seguimiento.getSegVersion();
-        this.proyecto= seguimiento.getPryId();
-    }
-    public Seguimiento getModel(){
-        return new Seguimiento(id, fecha, avanse, version);
-    }
+    
     
 }

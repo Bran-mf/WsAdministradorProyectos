@@ -6,8 +6,6 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -54,7 +52,7 @@ public class Proyecto implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "PRY_ID")
-    private BigDecimal pryId;
+    private Long pryId;
     @Basic(optional = false)
     @Column(name = "PRY_NOMBRE")
     private String pryNombre;
@@ -95,7 +93,7 @@ public class Proyecto implements Serializable {
     private String pryCorreopatrocinador;
     @Basic(optional = false)
     @Column(name = "PRY_VERSION")
-    private BigInteger pryVersion;
+    private Long pryVersion;
     @OneToMany(mappedBy = "pryId", fetch = FetchType.LAZY)
     private List<Actividades> actividadesList;
     @OneToMany(mappedBy = "pryId", fetch = FetchType.LAZY)
@@ -104,11 +102,11 @@ public class Proyecto implements Serializable {
     public Proyecto() {
     }
 
-    public Proyecto(BigDecimal pryId) {
+    public Proyecto(Long pryId) {
         this.pryId = pryId;
     }
 
-    public Proyecto(BigDecimal pryId, String pryNombre, String pryPatrocinador, String pryLiderusuario, String pyrLidertecnico, Date pyrInicioesperado, Date pryFinalesperado, String pryEstado, String pryCorreousuario, String pryCorreotenico, String pryCorreopatrocinador, BigInteger pryVersion) {
+    public Proyecto(Long pryId, String pryNombre, String pryPatrocinador, String pryLiderusuario, String pyrLidertecnico, Date pyrInicioesperado, Date pryFinalesperado, String pryEstado, String pryCorreousuario, String pryCorreotenico, String pryCorreopatrocinador, Long pryVersion) {
         this.pryId = pryId;
         this.pryNombre = pryNombre;
         this.pryPatrocinador = pryPatrocinador;
@@ -123,11 +121,37 @@ public class Proyecto implements Serializable {
         this.pryVersion = pryVersion;
     }
 
-    public BigDecimal getPryId() {
+    public void actualizarProyecto(ProyectoDto proyectoDto){
+    
+        this.pryCorreopatrocinador = proyectoDto.getCorreoPatrocinador();
+        this.pryCorreotenico = proyectoDto.getCorreoLiderTecnico();
+        this.pryCorreousuario = proyectoDto.getCorreoLiderUsuario();
+        this.pryEstado = proyectoDto.getEstado();
+        this.pryFinalesperado = proyectoDto.getFinalEsperado();
+        this.pryFinalreal = proyectoDto.getInicioReal();
+        this.pryId = proyectoDto.getId();
+        this.pryInicioreal = proyectoDto.getInicioReal();
+        this.pryLiderusuario = proyectoDto.getLiderUsuario();
+        this.pryNombre = proyectoDto.getNombre();
+        this.pryPatrocinador = proyectoDto.getPatrocinador();
+        this.pryVersion = proyectoDto.getVersion();
+        this.pyrInicioesperado = proyectoDto.getInicioEsperado();
+        this.pyrLidertecnico = proyectoDto.getLiderTectnico();
+        //this.actividadesList
+        //this.seguimientoList
+    }
+    public Proyecto( ProyectoDto proyectoDto ){
+    
+        this.pryId = proyectoDto.getId();
+        actualizarProyecto(proyectoDto);
+        
+    }
+    
+    public Long getPryId() {
         return pryId;
     }
 
-    public void setPryId(BigDecimal pryId) {
+    public void setPryId(Long pryId) {
         this.pryId = pryId;
     }
 
@@ -227,11 +251,11 @@ public class Proyecto implements Serializable {
         this.pryCorreopatrocinador = pryCorreopatrocinador;
     }
 
-    public BigInteger getPryVersion() {
+    public Long getPryVersion() {
         return pryVersion;
     }
 
-    public void setPryVersion(BigInteger pryVersion) {
+    public void setPryVersion(Long pryVersion) {
         this.pryVersion = pryVersion;
     }
 

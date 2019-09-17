@@ -6,8 +6,7 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -49,7 +48,7 @@ public class Actividades implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "ACT_ID")
-    private BigDecimal actId;
+    private Long actId;
     @Basic(optional = false)
     @Column(name = "ACT_DESCRIPCION")
     private String actDescripcion;
@@ -75,10 +74,10 @@ public class Actividades implements Serializable {
     private Date actFinalesperado;
     @Basic(optional = false)
     @Column(name = "ACT_ORDEN")
-    private BigInteger actOrden;
+    private Integer actOrden;
     @Basic(optional = false)
     @Column(name = "ACT_VERSION")
-    private BigInteger actVersion;
+    private Long actVersion;
     @JoinColumn(name = "PRY_ID", referencedColumnName = "PRY_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Proyecto pryId;
@@ -86,11 +85,11 @@ public class Actividades implements Serializable {
     public Actividades() {
     }
 
-    public Actividades(BigDecimal actId) {
+    public Actividades(Long actId) {
         this.actId = actId;
     }
 
-    public Actividades(BigDecimal actId, String actDescripcion, String actEncargado, String actEstado, Date actInicioesperado, Date actFinalesperado, BigInteger actOrden, BigInteger actVersion) {
+    public Actividades(Long actId, String actDescripcion, String actEncargado, String actEstado, Date actInicioesperado, Date actFinalesperado, Integer actOrden, Long actVersion) {
         this.actId = actId;
         this.actDescripcion = actDescripcion;
         this.actEncargado = actEncargado;
@@ -101,11 +100,39 @@ public class Actividades implements Serializable {
         this.actVersion = actVersion;
     }
 
-    public BigDecimal getActId() {
+    public Actividades(ActividadesDto act){
+        this.actId = act.getId();
+        actualizarActividades(act);
+    }
+    
+    public void actualizarActividades(ActividadesDto act){
+        this.actDescripcion = act.getDescripcion();
+        this.actEncargado = act.getEncargado();
+        this.actEstado = act.getEstado();
+        this.actFinalesperado = Date.from(act.getFinalEsperado().atStartOfDay()
+      .atZone(ZoneId.systemDefault())
+      .toInstant());
+        this.actFinalreal = Date.from(act.getFinalReal().atStartOfDay()
+      .atZone(ZoneId.systemDefault())
+      .toInstant());
+        this.actInicioesperado = Date.from(act.getInicioEsperado().atStartOfDay()
+      .atZone(ZoneId.systemDefault())
+      .toInstant());
+        this.actInicioreal = Date.from(act.getInicioReal().atStartOfDay()
+      .atZone(ZoneId.systemDefault())
+      .toInstant());
+        this.actId = act.getId();
+        this.actOrden = act.getOrden();
+        this.actVersion = act.getVersion();
+        this.pryId = new Proyecto(act.getProyecto());
+    }
+    
+    
+    public Long getActId() {
         return actId;
     }
 
-    public void setActId(BigDecimal actId) {
+    public void setActId(Long actId) {
         this.actId = actId;
     }
 
@@ -165,19 +192,19 @@ public class Actividades implements Serializable {
         this.actFinalesperado = actFinalesperado;
     }
 
-    public BigInteger getActOrden() {
+    public Integer getActOrden() {
         return actOrden;
     }
 
-    public void setActOrden(BigInteger actOrden) {
+    public void setActOrden(Integer actOrden) {
         this.actOrden = actOrden;
     }
 
-    public BigInteger getActVersion() {
+    public Long getActVersion() {
         return actVersion;
     }
 
-    public void setActVersion(BigInteger actVersion) {
+    public void setActVersion(Long actVersion) {
         this.actVersion = actVersion;
     }
 

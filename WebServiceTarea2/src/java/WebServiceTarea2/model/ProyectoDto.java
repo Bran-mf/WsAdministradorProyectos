@@ -5,8 +5,6 @@
  */
 package WebServiceTarea2.model;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Date;
  * @author Jose Pablo Bermudez
  */
 public class ProyectoDto {
-    private BigDecimal id;
+    private Long id;
     private String nombre;
     private String patrocinador;
     private String liderUsuario;
@@ -25,16 +23,56 @@ public class ProyectoDto {
     private String correoLiderUsuario;
     private String correoLiderTecnico;
     private String correoPatrocinador;
-    private BigInteger version;
+    private Long version;
     private Date inicioReal;
     private Date finalReal;
+    
+    
+    //constructores
+
+    public ProyectoDto() {
+    }
+
+    public ProyectoDto(Long id, String nombre, String patrocinador, String liderUsuario, String liderTectnico, Date inicioEsperado, Date finalEsperado, String estado, String correoLiderUsuario, String correoLiderTecnico, String correoPatrocinador, Long version) {
+        this.id = id;
+        this.nombre = nombre;
+        this.patrocinador = patrocinador;
+        this.liderUsuario = liderUsuario;
+        this.liderTectnico = liderTectnico;
+        this.inicioEsperado = inicioEsperado;
+        this.finalEsperado = finalEsperado;
+        this.estado = estado;
+        this.correoLiderUsuario = correoLiderUsuario;
+        this.correoLiderTecnico = correoLiderTecnico;
+        this.correoPatrocinador = correoPatrocinador;
+        this.version = version;
+    }
+    public ProyectoDto(Proyecto proyecto){
+        this.id = proyecto.getPryId();
+        this.nombre = proyecto.getPryNombre();
+        this.patrocinador = proyecto.getPryPatrocinador();
+        this.liderUsuario = proyecto.getPryLiderusuario();
+        this.liderTectnico = proyecto.getPyrLidertecnico();
+        this.inicioEsperado = proyecto.getPyrInicioesperado();
+        this.finalEsperado= proyecto.getPryFinalesperado();
+        this.correoLiderTecnico= proyecto.getPryCorreotenico();
+        this.correoLiderUsuario = proyecto.getPryCorreousuario();
+        this.correoPatrocinador = proyecto.getPryCorreopatrocinador();
+        this.version = proyecto.getPryVersion();
+        this.estado= proyecto.getPryEstado();           
+    }
+    public Proyecto getModel(){
+        return new Proyecto(id, nombre, patrocinador, liderUsuario, liderTectnico, inicioEsperado, finalEsperado, estado, correoLiderUsuario, correoLiderTecnico, correoPatrocinador, version);
+    }
+    
+    
     //metodos
     //get and set
-    public BigDecimal getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -118,11 +156,11 @@ public class ProyectoDto {
         this.correoPatrocinador = correoPatrocinador;
     }
 
-    public BigInteger getVersion() {
+    public Long getVersion() {
         return version;
     }
 
-    public void setVersion(BigInteger version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
@@ -140,42 +178,6 @@ public class ProyectoDto {
 
     public void setFinalReal(Date finalReal) {
         this.finalReal = finalReal;
-    }
-    //constructores
-
-    public ProyectoDto() {
-    }
-
-    public ProyectoDto(BigDecimal id, String nombre, String patrocinador, String liderUsuario, String liderTectnico, Date inicioEsperado, Date finalEsperado, String estado, String correoLiderUsuario, String correoLiderTecnico, String correoPatrocinador, BigInteger version) {
-        this.id = id;
-        this.nombre = nombre;
-        this.patrocinador = patrocinador;
-        this.liderUsuario = liderUsuario;
-        this.liderTectnico = liderTectnico;
-        this.inicioEsperado = inicioEsperado;
-        this.finalEsperado = finalEsperado;
-        this.estado = estado;
-        this.correoLiderUsuario = correoLiderUsuario;
-        this.correoLiderTecnico = correoLiderTecnico;
-        this.correoPatrocinador = correoPatrocinador;
-        this.version = version;
-    }
-    public ProyectoDto(Proyecto proyecto){
-        this.id = proyecto.getPryId();
-        this.nombre = proyecto.getPryNombre();
-        this.patrocinador = proyecto.getPryPatrocinador();
-        this.liderUsuario = proyecto.getPryLiderusuario();
-        this.liderTectnico = proyecto.getPyrLidertecnico();
-        this.inicioEsperado = proyecto.getPyrInicioesperado();
-        this.finalEsperado= proyecto.getPryFinalesperado();
-        this.correoLiderTecnico= proyecto.getPryCorreotenico();
-        this.correoLiderUsuario = proyecto.getPryCorreousuario();
-        this.correoPatrocinador = proyecto.getPryCorreopatrocinador();
-        this.version = proyecto.getPryVersion();
-        this.estado= proyecto.getPryEstado();           
-    }
-    public Proyecto getModel(){
-        return new Proyecto(id, nombre, patrocinador, liderUsuario, liderTectnico, inicioEsperado, finalEsperado, estado, correoLiderUsuario, correoLiderTecnico, correoPatrocinador, version);
     }
     
     

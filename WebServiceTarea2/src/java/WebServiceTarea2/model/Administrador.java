@@ -43,7 +43,7 @@ public class Administrador implements Serializable {
     private Long admId;
     @Basic(optional = false)
     @Column(name = "Adm_NOMBRE")
-    private String AdmNombre;
+    private String admNombre;
     @Basic(optional = false)
     @Column(name = "ADM_PAPELLIDO")
     private String admPapellido;
@@ -55,16 +55,16 @@ public class Administrador implements Serializable {
     private String admCorreo;
     @Basic(optional = false)
     @Column(name = "Adm_USUARIO")
-    private String AdmUsuario;
+    private String admUsuario;
     @Basic(optional = false)
     @Column(name = "Adm_CLAVE")
-    private String AdmClave;
+    private String admClave;
     @Basic(optional = false)
     @Column(name = "Adm_ESTADO")
-    private String AdmEstado;
+    private String admEstado;
     @Basic(optional = false)
     @Column(name = "Adm_VERSION")
-    private Long AdmVersion;
+    private Long admVersion;
 
     public Administrador() {
     }
@@ -75,14 +75,29 @@ public class Administrador implements Serializable {
 
     public Administrador(Long admId, String AdmNombre, String admPapellido, String admSapellido, String admCorreo, String AdmUsuario, String AdmClave, String AdmEstado, Long AdmVersion) {
         this.admId = admId;
-        this.AdmNombre = AdmNombre;
+        this.admNombre = AdmNombre;
         this.admPapellido = admPapellido;
         this.admSapellido = admSapellido;
         this.admCorreo = admCorreo;
-        this.AdmUsuario = AdmUsuario;
-        this.AdmClave = AdmClave;
-        this.AdmEstado = AdmEstado;
-        this.AdmVersion = AdmVersion;
+        this.admUsuario = AdmUsuario;
+        this.admClave = AdmClave;
+        this.admEstado = AdmEstado;
+        this.admVersion = AdmVersion;
+    }
+    public Administrador(AdministradorDto AdministradorDto) {
+        this.admId = AdministradorDto.getID();
+        actualizarAdministrador(AdministradorDto);
+    }
+    public void actualizarAdministrador(AdministradorDto Adm){
+        this.admClave = Adm.getClave();
+        this.admEstado = Adm.getEstado();
+        this.admNombre = Adm.getNombre();
+        this.admUsuario = Adm.getUsuario();
+        this.admVersion = Adm.getVersion();
+        this.admCorreo = Adm.getCorreo();
+        this.admId = Adm.getID();
+        this.admPapellido = Adm.getpApellido();
+        this.admSapellido = Adm.getsApellido();
     }
 
     public Long getAdmId() {
@@ -94,11 +109,11 @@ public class Administrador implements Serializable {
     }
 
     public String getAdmNombre() {
-        return AdmNombre;
+        return admNombre;
     }
 
     public void setAdmNombre(String AdmNombre) {
-        this.AdmNombre = AdmNombre;
+        this.admNombre = AdmNombre;
     }
 
     public String getAdmPapellido() {
@@ -126,35 +141,35 @@ public class Administrador implements Serializable {
     }
 
     public String getAdmUsuario() {
-        return AdmUsuario;
+        return admUsuario;
     }
 
     public void setAdmUsuario(String AdmUsuario) {
-        this.AdmUsuario = AdmUsuario;
+        this.admUsuario = AdmUsuario;
     }
 
     public String getAdmClave() {
-        return AdmClave;
+        return admClave;
     }
 
     public void setAdmClave(String AdmClave) {
-        this.AdmClave = AdmClave;
+        this.admClave = AdmClave;
     }
 
     public String getAdmEstado() {
-        return AdmEstado;
+        return admEstado;
     }
 
     public void setAdmEstado(String AdmEstado) {
-        this.AdmEstado = AdmEstado;
+        this.admEstado = AdmEstado;
     }
 
     public Long getAdmVersion() {
-        return AdmVersion;
+        return admVersion;
     }
 
     public void setAdmVersion(Long AdmVersion) {
-        this.AdmVersion = AdmVersion;
+        this.admVersion = AdmVersion;
     }
 
     @Override

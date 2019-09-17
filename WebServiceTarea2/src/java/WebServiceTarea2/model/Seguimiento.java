@@ -6,8 +6,6 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -43,17 +41,17 @@ public class Seguimiento implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "SEG_ID")
-    private BigDecimal segId;
+    private Long segId;
     @Basic(optional = false)
     @Column(name = "SEG_FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date segFecha;
     @Basic(optional = false)
     @Column(name = "SEG_AVANCE")
-    private BigInteger segAvance;
+    private Double segAvance;
     @Basic(optional = false)
     @Column(name = "SEG_VERSION")
-    private BigInteger segVersion;
+    private Long segVersion;
     @JoinColumn(name = "PRY_ID", referencedColumnName = "PRY_ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Proyecto pryId;
@@ -61,22 +59,34 @@ public class Seguimiento implements Serializable {
     public Seguimiento() {
     }
 
-    public Seguimiento(BigDecimal segId) {
+    public Seguimiento(Long segId) {
         this.segId = segId;
     }
 
-    public Seguimiento(BigDecimal segId, Date segFecha, BigInteger segAvance, BigInteger segVersion) {
+    public Seguimiento(Long segId, Date segFecha, Double segAvance, Long segVersion) {
         this.segId = segId;
         this.segFecha = segFecha;
         this.segAvance = segAvance;
         this.segVersion = segVersion;
     }
 
-    public BigDecimal getSegId() {
+    public void actualizarSeguimiento(SeguimientoDto seg){
+        this.segAvance = seg.getAvance();
+        this.segFecha = seg.getFecha();
+        this.segId  = seg.getId();
+        this.segVersion = seg.getVersion();
+        this.pryId = new Proyecto(seg.getProyecto());
+        
+    }
+    public Seguimiento(SeguimientoDto seg){
+        this.segId = seg.getId();
+        actualizarSeguimiento(seg);
+    }
+    public Long getSegId() {
         return segId;
     }
 
-    public void setSegId(BigDecimal segId) {
+    public void setSegId(Long segId) {
         this.segId = segId;
     }
 
@@ -88,19 +98,19 @@ public class Seguimiento implements Serializable {
         this.segFecha = segFecha;
     }
 
-    public BigInteger getSegAvance() {
+    public Double getSegAvance() {
         return segAvance;
     }
 
-    public void setSegAvance(BigInteger segAvance) {
+    public void setSegAvance(Double segAvance) {
         this.segAvance = segAvance;
     }
 
-    public BigInteger getSegVersion() {
+    public Long getSegVersion() {
         return segVersion;
     }
 
-    public void setSegVersion(BigInteger segVersion) {
+    public void setSegVersion(Long segVersion) {
         this.segVersion = segVersion;
     }
 
