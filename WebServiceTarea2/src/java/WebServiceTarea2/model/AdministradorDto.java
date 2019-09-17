@@ -33,14 +33,14 @@ public class AdministradorDto {
     
     public AdministradorDto(Administrador adm){
             this.ID = adm.getAdmId();
-            this.clave = adm.getAmdClave();
+            this.clave = adm.getAdmClave();
             this.correo = adm.getAdmCorreo();
-            this.estado = adm.getAmdEstado();
-            this.nombre = adm.getAmdNombre();
+            this.estado = adm.getAdmEstado();
+            this.nombre = adm.getAdmNombre();
             this.pApellido = adm.getAdmPapellido();
             this.sApellido = adm.getAdmSapellido();
-            this.usuario = adm.getAmdUsuario();
-            this.version = adm.getAmdVersion();
+            this.usuario = adm.getAdmUsuario();
+            this.version = adm.getAdmVersion();
     }
 
     public Long getID() {

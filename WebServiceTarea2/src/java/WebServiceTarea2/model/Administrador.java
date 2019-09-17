@@ -25,14 +25,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Administrador.findAll", query = "SELECT a FROM Administrador a")
     , @NamedQuery(name = "Administrador.findByAdmId", query = "SELECT a FROM Administrador a WHERE a.admId = :admId")
-    , @NamedQuery(name = "Administrador.findByAmdNombre", query = "SELECT a FROM Administrador a WHERE a.amdNombre = :amdNombre")
+    , @NamedQuery(name = "Administrador.findByAdmNombre", query = "SELECT a FROM Administrador a WHERE a.admNombre = :AdmNombre")
     , @NamedQuery(name = "Administrador.findByAdmPapellido", query = "SELECT a FROM Administrador a WHERE a.admPapellido = :admPapellido")
     , @NamedQuery(name = "Administrador.findByAdmSapellido", query = "SELECT a FROM Administrador a WHERE a.admSapellido = :admSapellido")
     , @NamedQuery(name = "Administrador.findByAdmCorreo", query = "SELECT a FROM Administrador a WHERE a.admCorreo = :admCorreo")
-    , @NamedQuery(name = "Administrador.findByAmdUsuario", query = "SELECT a FROM Administrador a WHERE a.amdUsuario = :amdUsuario")
-    , @NamedQuery(name = "Administrador.findByAmdClave", query = "SELECT a FROM Administrador a WHERE a.amdClave = :amdClave")
-    , @NamedQuery(name = "Administrador.findByAmdEstado", query = "SELECT a FROM Administrador a WHERE a.amdEstado = :amdEstado")
-    , @NamedQuery(name = "Administrador.findByAmdVersion", query = "SELECT a FROM Administrador a WHERE a.amdVersion = :amdVersion")})
+    , @NamedQuery(name = "Administrador.findByAdmUsuario", query = "SELECT a FROM Administrador a WHERE a.admUsuario = :AdmUsuario")
+    , @NamedQuery(name = "Administrador.findByAdmClave", query = "SELECT a FROM Administrador a WHERE a.admClave = :AdmClave")
+    , @NamedQuery(name = "Administrador.findByAdmEstado", query = "SELECT a FROM Administrador a WHERE a.admEstado = :AdmEstado")
+    , @NamedQuery(name = "Administrador.findByAdmVersion", query = "SELECT a FROM Administrador a WHERE a.admVersion = :AdmVersion")})
 public class Administrador implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,8 +42,8 @@ public class Administrador implements Serializable {
     @Column(name = "ADM_ID")
     private Long admId;
     @Basic(optional = false)
-    @Column(name = "AMD_NOMBRE")
-    private String amdNombre;
+    @Column(name = "Adm_NOMBRE")
+    private String AdmNombre;
     @Basic(optional = false)
     @Column(name = "ADM_PAPELLIDO")
     private String admPapellido;
@@ -54,17 +54,17 @@ public class Administrador implements Serializable {
     @Column(name = "ADM_CORREO")
     private String admCorreo;
     @Basic(optional = false)
-    @Column(name = "AMD_USUARIO")
-    private String amdUsuario;
+    @Column(name = "Adm_USUARIO")
+    private String AdmUsuario;
     @Basic(optional = false)
-    @Column(name = "AMD_CLAVE")
-    private String amdClave;
+    @Column(name = "Adm_CLAVE")
+    private String AdmClave;
     @Basic(optional = false)
-    @Column(name = "AMD_ESTADO")
-    private String amdEstado;
+    @Column(name = "Adm_ESTADO")
+    private String AdmEstado;
     @Basic(optional = false)
-    @Column(name = "AMD_VERSION")
-    private Long amdVersion;
+    @Column(name = "Adm_VERSION")
+    private Long AdmVersion;
 
     public Administrador() {
     }
@@ -73,16 +73,16 @@ public class Administrador implements Serializable {
         this.admId = admId;
     }
 
-    public Administrador(Long admId, String amdNombre, String admPapellido, String admSapellido, String admCorreo, String amdUsuario, String amdClave, String amdEstado, Long amdVersion) {
+    public Administrador(Long admId, String AdmNombre, String admPapellido, String admSapellido, String admCorreo, String AdmUsuario, String AdmClave, String AdmEstado, Long AdmVersion) {
         this.admId = admId;
-        this.amdNombre = amdNombre;
+        this.AdmNombre = AdmNombre;
         this.admPapellido = admPapellido;
         this.admSapellido = admSapellido;
         this.admCorreo = admCorreo;
-        this.amdUsuario = amdUsuario;
-        this.amdClave = amdClave;
-        this.amdEstado = amdEstado;
-        this.amdVersion = amdVersion;
+        this.AdmUsuario = AdmUsuario;
+        this.AdmClave = AdmClave;
+        this.AdmEstado = AdmEstado;
+        this.AdmVersion = AdmVersion;
     }
 
     public Long getAdmId() {
@@ -93,12 +93,12 @@ public class Administrador implements Serializable {
         this.admId = admId;
     }
 
-    public String getAmdNombre() {
-        return amdNombre;
+    public String getAdmNombre() {
+        return AdmNombre;
     }
 
-    public void setAmdNombre(String amdNombre) {
-        this.amdNombre = amdNombre;
+    public void setAdmNombre(String AdmNombre) {
+        this.AdmNombre = AdmNombre;
     }
 
     public String getAdmPapellido() {
@@ -125,36 +125,36 @@ public class Administrador implements Serializable {
         this.admCorreo = admCorreo;
     }
 
-    public String getAmdUsuario() {
-        return amdUsuario;
+    public String getAdmUsuario() {
+        return AdmUsuario;
     }
 
-    public void setAmdUsuario(String amdUsuario) {
-        this.amdUsuario = amdUsuario;
+    public void setAdmUsuario(String AdmUsuario) {
+        this.AdmUsuario = AdmUsuario;
     }
 
-    public String getAmdClave() {
-        return amdClave;
+    public String getAdmClave() {
+        return AdmClave;
     }
 
-    public void setAmdClave(String amdClave) {
-        this.amdClave = amdClave;
+    public void setAdmClave(String AdmClave) {
+        this.AdmClave = AdmClave;
     }
 
-    public String getAmdEstado() {
-        return amdEstado;
+    public String getAdmEstado() {
+        return AdmEstado;
     }
 
-    public void setAmdEstado(String amdEstado) {
-        this.amdEstado = amdEstado;
+    public void setAdmEstado(String AdmEstado) {
+        this.AdmEstado = AdmEstado;
     }
 
-    public Long getAmdVersion() {
-        return amdVersion;
+    public Long getAdmVersion() {
+        return AdmVersion;
     }
 
-    public void setAmdVersion(Long amdVersion) {
-        this.amdVersion = amdVersion;
+    public void setAdmVersion(Long AdmVersion) {
+        this.AdmVersion = AdmVersion;
     }
 
     @Override
