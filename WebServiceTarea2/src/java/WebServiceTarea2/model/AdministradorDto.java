@@ -13,38 +13,48 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Jose Pablo Bermudez
  */
-@XmlRootElement(name = "AdministardorDto")
-@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "AdministradorDto")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class AdministradorDto {
     
-    Long ID;
-    String nombre;
-    String pApellido;
-    String sApellido;
-    String correo;
-    String usuario;
-    String clave;
-    String estado;
-    Long version;
+    private Long ID;
+    private String nombre;
+    private String pApellido;
+    private String sApellido;
+    private String cedula;
+    private String correo;
+    private String usuario;
+    private String clave;
+    private String estado;
+    private Long version;
     
     public AdministradorDto(){
         
     }
-    
+   
     public AdministradorDto(Administrador adm){
-            this.ID = adm.getAdmId();
-            this.clave = adm.getAdmClave();
-            this.correo = adm.getAdmCorreo();
-            this.estado = adm.getAdmEstado();
-            this.nombre = adm.getAdmNombre();
-            this.pApellido = adm.getAdmPapellido();
-            this.sApellido = adm.getAdmSapellido();
-            this.usuario = adm.getAdmUsuario();
-            this.version = adm.getAdmVersion();
+        this.ID = adm.getAdmId();
+        this.clave = adm.getAdmClave();
+        this.correo = adm.getAdmCorreo();
+        this.estado = adm.getAdmEstado();
+        this.nombre = adm.getAdmNombre();
+        this.pApellido = adm.getAdmPapellido();
+        this.sApellido = adm.getAdmSapellido();
+        this.usuario = adm.getAdmUsuario();
+        this.version = adm.getAdmVersion();
+        this.cedula = adm.getAdmCedula();
     }
 
     public Long getID() {
         return ID;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
     }
 
     public void setID(Long ID) {

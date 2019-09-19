@@ -9,12 +9,17 @@ import WebServiceTarea2.util.LocalDateAdapter;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
  * @author Jose Pablo Bermudez
  */
+@XmlRootElement(name = "ActividadesDto")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ActividadesDto {
     private Long id;
     private String descripcion;

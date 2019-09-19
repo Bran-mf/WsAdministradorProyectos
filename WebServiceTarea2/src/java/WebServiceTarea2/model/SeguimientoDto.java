@@ -6,11 +6,16 @@
 package WebServiceTarea2.model;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Jose Pablo Bermudez
  */
+@XmlRootElement(name = "SeguimientoDto")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class SeguimientoDto {
     private Long id;
     private Date fecha; //dia en que se hizo el seguimiento

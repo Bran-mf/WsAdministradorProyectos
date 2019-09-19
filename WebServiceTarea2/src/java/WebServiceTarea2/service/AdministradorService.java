@@ -12,13 +12,17 @@ import WebServiceTarea2.util.Respuesta;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import jdk.nashorn.internal.runtime.regexp.joni.EncodingHelper;
+
 
 /**
  *
@@ -31,7 +35,145 @@ public class AdministradorService {
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em;
 
+    private static final Logger LOG = Logger.getLogger(AdministradorService.class.getName());
+     
+    /*public Administrador getAdmin(String usu, String contra){
+        Administrador admin; 
+        Query qryUsuContra = em.createNamedQuery("Administrador.findByAdmClave",Administrador.class);
+        qryUsuContra.setParameter("admClave",contra);
+        qryUsuContra.setParameter("admUsuario",usu);
+        try {
+            admin = (Administrador) qryUsuContra.getSingleResult();
+        } catch (NoResultException ex) {
+            admin = null;
+        }
+        return admin; 
+    }
+    
+    public Administrador getAdmin(Long adminId){
+        Administrador admin;
+        Query qry = em.createNamedQuery("Administrador.findByAdmId", Administrador.class);
+        qry.setParameter("admId", adminId);
+        try{
+            admin = (Administrador) qry.getSingleResult();
+        } catch(NoResultException ex){
+            admin = null;
+        }
+        return admin;
+    }*/
+    
     public Respuesta validarAdministrador(String usuario, String clave) {
+        try {
+            Query qryActividad = em.createNamedQuery("Administrador.findByUsuClave", Administrador.class);
+            qryActividad.setParameter("adnUsuario ", usuario);
+            qryActividad.setParameter("adnContrasena", clave);
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administrador", new AdministradorDto((Administrador) qryActividad.getSingleResult()));
+
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un Administrador con las credenciales ingresadas.", "validarAdministrador NoResultException");
+        } catch (NonUniqueResultException ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Administrador.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Administrador.", "validarAdministrador NonUniqueResultException");
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Administrador.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Administrador.", "validarAdministrador " + ex.getMessage());
+        }
+    }
+    
+    public Respuesta getAdministradors() {
+        try {
+            Query qryAdministrador = em.createNamedQuery("Administrador.findAll", Administrador.class);
+            List<Administrador> Administrador = qryAdministrador.getResultList();
+            List<AdministradorDto> AdministradorsDto = new ArrayList<>();
+            for (Administrador administradores : Administrador) {
+                AdministradorsDto.add(new AdministradorDto(administradores));
+            }
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administradors", AdministradorsDto);
+
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existen Administradors con los criterios ingresados.", "getAdministradors NoResultException");
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Administrador.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Administrador.", "getAdministrador " + ex.getMessage());
+        }
+    }
+
+    public Respuesta guardarAdministrador(AdministradorDto AdministradorDto) {
+        try {
+            Administrador Administrador;
+            if (AdministradorDto.getID()!= null && AdministradorDto.getID() > 0) {
+                Administrador = em.find(Administrador.class, AdministradorDto.getID());
+                if (Administrador == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encrontró el Administrador a modificar", "guardarAdministrador NoResultException");
+                }
+                Administrador.actualizarAdministrador(AdministradorDto);
+                Administrador = em.merge(Administrador);
+            } else {
+                Administrador = new Administrador(AdministradorDto);
+                em.persist(Administrador);
+            }
+            em.flush();
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "Administrador guardado exitosamente", "", "Administrador", new AdministradorDto(Administrador));
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al guardar el Administrador.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el Administrador.", "guardarAdministrador " + ex.getMessage());
+        }
+    }
+    
+    public Respuesta eliminarAdministrador(Long id) {
+        try {
+            //Empleado empleado;
+            Administrador Administrador;
+            if (id != null && id > 0) {
+                Administrador = em.find(Administrador.class, id);
+                if (Administrador == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontró el Administrador a eliminar.", "EliminarAdministrador NoResultException");
+                }
+                em.remove(Administrador);
+            } else {
+                return new Respuesta(false, CodigoRespuesta.ERROR_CLIENTE, "Debe cargar el Administrador a eliminar.", "EliminarAdministrador NoResultException");
+            }
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "");
+        } catch (Exception ex) {
+            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {
+                return new Respuesta(false, CodigoRespuesta.ERROR_PERMISOS, "No se puede eliminar el Administrador porque tiene relaciones con otros registros.", "EliminarAdministrador " + ex.getMessage());
+            }
+            Logger.getLogger(AdministradorService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el Administrador.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Administrador.", "EliminarAdministrador " + ex.getMessage());
+        }
+    }
+    
+    /**
+     * 
+     * @param admin
+     * @return 
+     */ 
+    /*public Boolean eliminarAdmin(Administrador admin){
+        Administrador adminAux = null;
+        if(admin!=null && admin.getAdmId()!=null){
+            Query qryId = em.createNamedQuery("Administrador.findByAdmId", Administrador.class);            
+            qryId.setParameter("admId", admin.getAdmId());   
+            try {
+                adminAux = (Administrador) qryId.getSingleResult();
+            } catch (NoResultException ex) {
+                adminAux = null;
+            }
+            if(adminAux != null){
+                Administrador adminAux2 = adminAux;
+                em.remove(adminAux2);
+                em.flush();
+                em.getEntityManagerFactory().getCache().evictAll();
+                adminAux = getAdmin(adminAux2.getAdmId());
+            } else {
+                adminAux = null;
+            }
+        }
+        return (adminAux == null);
+    }*/
+    
+/*    public Respuesta validarAdministrador(String usuario, String clave) {
         try {
             Query query = em.createNamedQuery("Administrador.findbyUsuClave", Administrador.class);
             query.setParameter("usuario", usuario);
@@ -105,5 +247,5 @@ public class AdministradorService {
             }
             return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
         }
-    }
+    }*/
 }

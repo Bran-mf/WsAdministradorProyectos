@@ -9,10 +9,13 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.QueryHint;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,18 +37,23 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Administrador.findByAdmClave", query = "SELECT a FROM Administrador a WHERE a.admClave = :AdmClave")
     , @NamedQuery(name = "Administrador.findByAdmEstado", query = "SELECT a FROM Administrador a WHERE a.admEstado = :AdmEstado")
     , @NamedQuery(name = "Administrador.findByAdmVersion", query = "SELECT a FROM Administrador a WHERE a.admVersion = :AdmVersion")
-    , @NamedQuery(name = "Administrador.findbyUsuClave", query = "SELECT a FROM Adinsitador a WHERE a.admUsuario = :usuario AND a.admClave = :clave",hints = @QueryHint(name="elcipse.refresh",value = "true"))})
+    , @NamedQuery(name = "Administrador.findbyUsuClave", query = "SELECT a FROM Administrador a WHERE a.admUsuario = :usuario AND a.admClave = :clave",hints = @QueryHint(name="elcipse.refresh",value = "true"))})
 public class Administrador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @SequenceGenerator(name = "ADM_ID_GENERATOR", sequenceName = "ADM_ADMINISTRADOR_SEQ01", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADM_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "ADM_ID")
     private Long admId;
     @Basic(optional = false)
     @Column(name = "Adm_NOMBRE")
     private String admNombre;
+    @Basic(optional = false)
+    @Column(name = "ADM_CEDULA")
+    private String admCedula;
     @Basic(optional = false)
     @Column(name = "ADM_PAPELLIDO")
     private String admPapellido;
@@ -75,7 +83,7 @@ public class Administrador implements Serializable {
         this.admId = admId;
     }
 
-    public Administrador(Long admId, String AdmNombre, String admPapellido, String admSapellido, String admCorreo, String AdmUsuario, String AdmClave, String AdmEstado, Long AdmVersion) {
+    public Administrador(Long admId, String AdmNombre, String admPapellido, String admSapellido, String cedula,String admCorreo, String AdmUsuario, String AdmClave, String AdmEstado, Long AdmVersion) {
         this.admId = admId;
         this.admNombre = AdmNombre;
         this.admPapellido = admPapellido;
@@ -85,21 +93,24 @@ public class Administrador implements Serializable {
         this.admClave = AdmClave;
         this.admEstado = AdmEstado;
         this.admVersion = AdmVersion;
+        this.admCedula = cedula;
     }
     public Administrador(AdministradorDto AdministradorDto) {
         this.admId = AdministradorDto.getID();
         actualizarAdministrador(AdministradorDto);
     }
-    public void actualizarAdministrador(AdministradorDto Adm){
-        this.admClave = Adm.getClave();
-        this.admEstado = Adm.getEstado();
-        this.admNombre = Adm.getNombre();
-        this.admUsuario = Adm.getUsuario();
-        this.admVersion = Adm.getVersion();
-        this.admCorreo = Adm.getCorreo();
-        this.admId = Adm.getID();
-        this.admPapellido = Adm.getpApellido();
-        this.admSapellido = Adm.getsApellido();
+
+    public void actualizarAdministrador(AdministradorDto adm){
+        //no poner el id aquí
+        this.admClave = adm.getClave();
+        this.admCorreo = adm.getCorreo();
+        this.admEstado = adm.getEstado();
+        this.admNombre = adm.getNombre();
+        this.admPapellido = adm.getpApellido();
+        this.admSapellido = adm.getsApellido();
+        this.admUsuario = adm.getUsuario();
+        this.admVersion = adm.getVersion();
+        this.admCedula = adm.getCedula();
     }
 
     public Long getAdmId() {
@@ -114,6 +125,14 @@ public class Administrador implements Serializable {
         return admNombre;
     }
 
+    public String getAdmCedula() {
+        return admCedula;
+    }
+
+    public void setAdmCedula(String admCedula) {
+        this.admCedula = admCedula;
+    }
+    
     public void setAdmNombre(String AdmNombre) {
         this.admNombre = AdmNombre;
     }

@@ -5,13 +5,15 @@
  */
 package webService;
 
-
-import WebServiceTarea2.model.Proyecto;
+import WebServiceTarea2.model.AdministradorDto;
 import WebServiceTarea2.model.ProyectoDto;
+import WebServiceTarea2.service.AdministradorService;
 import WebServiceTarea2.service.ProyectoService;
+import WebServiceTarea2.util.CodigoRespuesta;
 import WebServiceTarea2.util.Respuesta;
 import static com.sun.corba.se.impl.util.Utility.printStackTrace;
-import java.math.BigDecimal;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 
 import javax.jws.WebService;
@@ -25,36 +27,42 @@ import javax.jws.WebParam;
 @WebService(serviceName = "WS")
 public class WS {
     @EJB
-    private ProyectoService proyectoService;
-    /**
-     * This is a sample web service operation
-     */
-    @WebMethod(operationName = "hello")
-    public String hello(@WebParam(name = "name") String txt) {
-        return "Hello " + txt + " !";
-    }
-
-    /**
-     * Web service operation
-     */
-
-    public String guardar(@WebParam(name = "usuario") Proyecto usuario) {
+    ProyectoService proyectoService;
+    @EJB
+    AdministradorService adminService;
+    
+     @WebMethod(operationName = "getAdministrador")
+    public String getAdministrador(@WebParam(name = "Administrador") String Administrador, @WebParam(name = "contrasenna") String contrasenna) {
         //TODO write your implementation code here:
-        return null;
+        return "Administrador: " + Administrador + " Contraseña: " + contrasenna;
     }
 
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "operation")
-    public Proyecto operation(@WebParam(name = "id") BigDecimal id) {
-        //TODO write your implementation code here:
-        return null;
-    }
+    @WebMethod(operationName = "guardarAdministrador")
+    public Respuesta guardarAdministrador(@WebParam(name = "Administrador") AdministradorDto Administrador) {
 
-    /**
-     * Web service operation
-     */
+        try {
+            Respuesta respuesta = adminService.guardarAdministrador(Administrador);
+            return respuesta;
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Error guardando usuario", ex.getMessage());
+        }
+    }
+    
+    @WebMethod(operationName = "eliminarAdministrador")
+    public String EliminarAdministrador(@WebParam(name = "ID") Long ID) {
+        try {
+            Respuesta respuesta = adminService.eliminarAdministrador(ID);
+            if (!respuesta.getEstado()) {
+                return respuesta.getMensaje();
+            }
+            return respuesta.getMensaje();
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return "Error al eliminar el Administrador";
+        }
+    }
+    
     @WebMethod(operationName = "getProyectoPorID") //este regresa el proyecto buscado por id
     public ProyectoDto getProyectoPorID(@WebParam(name = "id") int id) {
         try{
@@ -64,7 +72,7 @@ public class WS {
                  System.out.println(res.getMensajeInterno());
                  return null;
             }
-            return  (ProyectoDto)res.getResultado("proyecto");
+            return  (ProyectoDto)res.getResultado("proyecto");//es mejor si lo retorna como en el método de guardar, no retornar una respuesta sino un proyectodto
         } catch(Exception ex){
             printStackTrace();
             return null;

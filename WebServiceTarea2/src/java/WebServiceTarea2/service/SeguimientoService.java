@@ -12,6 +12,8 @@ import WebServiceTarea2.util.Respuesta;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -21,6 +23,8 @@ import javax.persistence.Query;
  *
  * @author Jose Pablo Bermudez
  */
+@Stateless
+@LocalBean
 public class SeguimientoService {
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em;

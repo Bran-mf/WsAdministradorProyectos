@@ -6,11 +6,16 @@
 package WebServiceTarea2.model;
 
 import java.util.Date;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Jose Pablo Bermudez
  */
+@XmlRootElement(name = "ProyectoDto")
+@XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class ProyectoDto {
     private Long id;
     private String nombre;
