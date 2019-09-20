@@ -5,6 +5,7 @@
  */
 package webService;
 
+import WebServiceTarea2.model.Administrador;
 import WebServiceTarea2.model.AdministradorDto;
 import WebServiceTarea2.model.ProyectoDto;
 import WebServiceTarea2.service.AdministradorService;
@@ -60,6 +61,16 @@ public class WS {
         } catch (Exception ex) {
             Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
             return "Error al eliminar el Administrador";
+        }
+    }
+    @WebMethod(operationName = "getAdministradorById")
+    public AdministradorDto getAdminById(@WebParam(name = "adminId") Long adminId) {
+        Administrador admin = adminService.getAdmin(adminId);
+        if(admin!=null && admin.getAdmId()!=null){
+            AdministradorDto adminDto = new AdministradorDto(admin);
+            return adminDto;
+        } else {
+            return null;
         }
     }
     

@@ -42,7 +42,7 @@ public class Seguimiento implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name = "SEG_ID_GENERATOR", sequenceName = "SEG_ADMINISTRADOR_SEQ01", allocationSize = 1)
+    @SequenceGenerator(name = "SEG_ID_GENERATOR", sequenceName = "SEQ_SEGUIMIENTO", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEG_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "SEG_ID")

@@ -145,6 +145,18 @@ public class AdministradorService {
         }
     }
     
+    public Administrador getAdmin(Long adminId){
+        Administrador admin;
+        Query qry = em.createNamedQuery("Administrador.findByAdmId", Administrador.class);
+        qry.setParameter("admId", adminId);
+        try{
+            admin = (Administrador) qry.getSingleResult();
+        } catch(NoResultException ex){
+            admin = null;
+        }
+        return admin;
+    }
+    
     /**
      * 
      * @param admin

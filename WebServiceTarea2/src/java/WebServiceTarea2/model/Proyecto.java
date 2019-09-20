@@ -6,6 +6,9 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -53,7 +56,7 @@ public class Proyecto implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name = "PRY_ID_GENERATOR", sequenceName = "PRY_ADMINISTRADOR_SEQ01", allocationSize = 1)
+    @SequenceGenerator(name = "PRY_ID_GENERATOR", sequenceName = "SEQ_PROYECTO", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRY_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "PRY_ID")
@@ -111,20 +114,26 @@ public class Proyecto implements Serializable {
         this.pryId = pryId;
     }
 
-    public Proyecto(Long pryId, String pryNombre, String pryPatrocinador, String pryLiderusuario, String pyrLidertecnico, Date pyrInicioesperado, Date pryFinalesperado, String pryEstado, String pryCorreousuario, String pryCorreotenico, String pryCorreopatrocinador, Long pryVersion) {
+    public Proyecto(Long pryId, String pryNombre, String pryPatrocinador, String pryLiderusuario, String pyrLidertecnico, Date pyrInicioesperado, Date pryInicioreal, Date pryFinalesperado, Date pryFinalreal, String pryEstado, String pryCorreousuario, String pryCorreotenico, String pryCorreopatrocinador, Long pryVersion, List<Actividades> actividadesList, List<Seguimiento> seguimientoList) {
         this.pryId = pryId;
         this.pryNombre = pryNombre;
         this.pryPatrocinador = pryPatrocinador;
         this.pryLiderusuario = pryLiderusuario;
         this.pyrLidertecnico = pyrLidertecnico;
         this.pyrInicioesperado = pyrInicioesperado;
+        this.pryInicioreal = pryInicioreal;
         this.pryFinalesperado = pryFinalesperado;
+        this.pryFinalreal = pryFinalreal;
         this.pryEstado = pryEstado;
         this.pryCorreousuario = pryCorreousuario;
         this.pryCorreotenico = pryCorreotenico;
         this.pryCorreopatrocinador = pryCorreopatrocinador;
         this.pryVersion = pryVersion;
+        this.actividadesList = actividadesList;
+        this.seguimientoList = seguimientoList;
     }
+
+    
 
     public void actualizarProyecto(ProyectoDto proyectoDto){
     
@@ -132,15 +141,22 @@ public class Proyecto implements Serializable {
         this.pryCorreotenico = proyectoDto.getCorreoLiderTecnico();
         this.pryCorreousuario = proyectoDto.getCorreoLiderUsuario();
         this.pryEstado = proyectoDto.getEstado();
-        this.pryFinalesperado = proyectoDto.getFinalEsperado();
-        this.pryFinalreal = proyectoDto.getInicioReal();
+        if (proyectoDto.getInicioEsperado()!= null && proyectoDto.getFinalEsperado()!= null) {
+            LocalDateTime inicioEsperado = LocalDateTime.parse(proyectoDto.getInicioEsperado(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            LocalDateTime finalEsperado = LocalDateTime.parse(proyectoDto.getFinalEsperado(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            LocalDateTime inicioReal = LocalDateTime.parse(proyectoDto.getInicioReal(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            LocalDateTime finalReal = LocalDateTime.parse(proyectoDto.getFinalReal(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            this.pryFinalesperado = Date.from(inicioEsperado.atZone(ZoneId.systemDefault()).toInstant());
+            this.pryFinalreal = Date.from(finalReal.atZone(ZoneId.systemDefault()).toInstant());
+            this.pryInicioreal = Date.from(inicioReal.atZone(ZoneId.systemDefault()).toInstant());
+            this.pyrInicioesperado = Date.from(inicioEsperado.atZone(ZoneId.systemDefault()).toInstant());
+        }
+        
         this.pryId = proyectoDto.getId();
-        this.pryInicioreal = proyectoDto.getInicioReal();
         this.pryLiderusuario = proyectoDto.getLiderUsuario();
         this.pryNombre = proyectoDto.getNombre();
         this.pryPatrocinador = proyectoDto.getPatrocinador();
         this.pryVersion = proyectoDto.getVersion();
-        this.pyrInicioesperado = proyectoDto.getInicioEsperado();
         this.pyrLidertecnico = proyectoDto.getLiderTectnico();
         //this.actividadesList
         //this.seguimientoList

@@ -37,13 +37,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Administrador.findByAdmClave", query = "SELECT a FROM Administrador a WHERE a.admClave = :AdmClave")
     , @NamedQuery(name = "Administrador.findByAdmEstado", query = "SELECT a FROM Administrador a WHERE a.admEstado = :AdmEstado")
     , @NamedQuery(name = "Administrador.findByAdmVersion", query = "SELECT a FROM Administrador a WHERE a.admVersion = :AdmVersion")
+    , @NamedQuery(name = "Administrador.findByAdmCedula", query = "SELECT a FROM Administrador a WHERE a.admCedula = :AdmCedula")
     , @NamedQuery(name = "Administrador.findbyUsuClave", query = "SELECT a FROM Administrador a WHERE a.admUsuario = :usuario AND a.admClave = :clave",hints = @QueryHint(name="elcipse.refresh",value = "true"))})
 public class Administrador implements Serializable {
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name = "ADM_ID_GENERATOR", sequenceName = "ADM_ADMINISTRADOR_SEQ01", allocationSize = 1)
+    @SequenceGenerator(name = "ADM_ID_GENERATOR", sequenceName = "SEQ_ADMINISTRADOR", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ADM_ID_GENERATOR")
     @Basic(optional = false)
     @Column(name = "ADM_ID")

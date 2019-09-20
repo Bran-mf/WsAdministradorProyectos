@@ -5,6 +5,8 @@
  */
 package WebServiceTarea2.model;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -22,15 +24,15 @@ public class ProyectoDto {
     private String patrocinador;
     private String liderUsuario;
     private String liderTectnico;
-    private Date inicioEsperado;
-    private Date finalEsperado;
+    private String inicioEsperado;
+    private String finalEsperado;
     private String estado;
     private String correoLiderUsuario;
     private String correoLiderTecnico;
     private String correoPatrocinador;
     private Long version;
-    private Date inicioReal;
-    private Date finalReal;
+    private String inicioReal;
+    private String finalReal;
     
     
     //constructores
@@ -38,7 +40,7 @@ public class ProyectoDto {
     public ProyectoDto() {
     }
 
-    public ProyectoDto(Long id, String nombre, String patrocinador, String liderUsuario, String liderTectnico, Date inicioEsperado, Date finalEsperado, String estado, String correoLiderUsuario, String correoLiderTecnico, String correoPatrocinador, Long version) {
+    public ProyectoDto(Long id, String nombre, String patrocinador, String liderUsuario, String liderTectnico, String inicioEsperado, String finalEsperado, String estado, String correoLiderUsuario, String correoLiderTecnico, String correoPatrocinador, Long version, String inicioReal, String finalReal) {
         this.id = id;
         this.nombre = nombre;
         this.patrocinador = patrocinador;
@@ -51,24 +53,47 @@ public class ProyectoDto {
         this.correoLiderTecnico = correoLiderTecnico;
         this.correoPatrocinador = correoPatrocinador;
         this.version = version;
+        this.inicioReal = inicioReal;
+        this.finalReal = finalReal;
     }
+
+    
     public ProyectoDto(Proyecto proyecto){
         this.id = proyecto.getPryId();
         this.nombre = proyecto.getPryNombre();
         this.patrocinador = proyecto.getPryPatrocinador();
         this.liderUsuario = proyecto.getPryLiderusuario();
         this.liderTectnico = proyecto.getPyrLidertecnico();
-        this.inicioEsperado = proyecto.getPyrInicioesperado();
-        this.finalEsperado= proyecto.getPryFinalesperado();
+        if (proyecto.getPryInicioreal()!= null && proyecto.getPryFinalesperado()!= null && proyecto.getPryFinalesperado()!= null) {
+            LocalDateTime localDateTime = proyecto.getPryFinalesperado().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            this.finalEsperado = localDateTime.toLocalTime().toString();
+
+            LocalDateTime localDateTime2 = proyecto.getPryFinalreal().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            this.finalReal = localDateTime2.toLocalTime().toString();
+            
+            LocalDateTime localDateTime3 = proyecto.getPryInicioreal().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            this.inicioReal = localDateTime3.toLocalTime().toString();
+            
+            LocalDateTime localDateTime4 = proyecto.getPyrInicioesperado().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            this.inicioEsperado = localDateTime3.toLocalTime().toString();
+        }
         this.correoLiderTecnico= proyecto.getPryCorreotenico();
         this.correoLiderUsuario = proyecto.getPryCorreousuario();
         this.correoPatrocinador = proyecto.getPryCorreopatrocinador();
         this.version = proyecto.getPryVersion();
         this.estado= proyecto.getPryEstado();           
     }
-    public Proyecto getModel(){
+    /*public Proyecto getModel(){
         return new Proyecto(id, nombre, patrocinador, liderUsuario, liderTectnico, inicioEsperado, finalEsperado, estado, correoLiderUsuario, correoLiderTecnico, correoPatrocinador, version);
-    }
+    }*/
     
     
     //metodos
@@ -80,7 +105,7 @@ public class ProyectoDto {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
@@ -113,19 +138,19 @@ public class ProyectoDto {
         this.liderTectnico = liderTectnico;
     }
 
-    public Date getInicioEsperado() {
+    public String getInicioEsperado() {
         return inicioEsperado;
     }
 
-    public void setInicioEsperado(Date inicioEsperado) {
+    public void setInicioEsperado(String inicioEsperado) {
         this.inicioEsperado = inicioEsperado;
     }
 
-    public Date getFinalEsperado() {
+    public String getFinalEsperado() {
         return finalEsperado;
     }
 
-    public void setFinalEsperado(Date finalEsperado) {
+    public void setFinalEsperado(String finalEsperado) {
         this.finalEsperado = finalEsperado;
     }
 
@@ -169,19 +194,19 @@ public class ProyectoDto {
         this.version = version;
     }
 
-    public Date getInicioReal() {
+    public String getInicioReal() {
         return inicioReal;
     }
 
-    public void setInicioReal(Date inicioReal) {
+    public void setInicioReal(String inicioReal) {
         this.inicioReal = inicioReal;
     }
 
-    public Date getFinalReal() {
+    public String getFinalReal() {
         return finalReal;
     }
 
-    public void setFinalReal(Date finalReal) {
+    public void setFinalReal(String finalReal) {
         this.finalReal = finalReal;
     }
     
