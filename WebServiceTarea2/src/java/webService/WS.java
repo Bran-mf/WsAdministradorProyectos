@@ -38,6 +38,19 @@ public class WS {
         return "Administrador: " + Administrador + " Contraseña: " + contrasenna;
     }
 
+    @WebMethod(operationName = "getUsuario")
+    public Respuesta getUsuario(@WebParam(name = "usuario") String usuario, @WebParam(name = "clave") String clave) {
+        try {
+            // Consulto el service del Administrador y devuelvo la respuesta al cliente
+            Respuesta respuesta = adminService.validarAdministrador(usuario, clave);
+            return respuesta;
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Error al obtener el Usuario", "getUsuario:"+ex.getMessage());
+        }
+    }
+
+    
     @WebMethod(operationName = "guardarAdministrador")
     public Respuesta guardarAdministrador(@WebParam(name = "Administrador") AdministradorDto Administrador) {
 

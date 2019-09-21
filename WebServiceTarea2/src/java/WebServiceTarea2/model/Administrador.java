@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Administrador.findByAdmEstado", query = "SELECT a FROM Administrador a WHERE a.admEstado = :AdmEstado")
     , @NamedQuery(name = "Administrador.findByAdmVersion", query = "SELECT a FROM Administrador a WHERE a.admVersion = :AdmVersion")
     , @NamedQuery(name = "Administrador.findByAdmCedula", query = "SELECT a FROM Administrador a WHERE a.admCedula = :AdmCedula")
-    , @NamedQuery(name = "Administrador.findbyUsuClave", query = "SELECT a FROM Administrador a WHERE a.admUsuario = :usuario AND a.admClave = :clave",hints = @QueryHint(name="elcipse.refresh",value = "true"))})
+    ,@NamedQuery(name = "Administrador.findbyUsuClave", query = "SELECT a FROM Administrador a WHERE a.admUsuario =:admUsuario AND a.admClave =:admClave")})
 public class Administrador implements Serializable {
 
     private static final long serialVersionUID = 1L;
