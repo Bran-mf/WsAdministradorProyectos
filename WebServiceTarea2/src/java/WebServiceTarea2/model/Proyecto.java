@@ -141,17 +141,9 @@ public class Proyecto implements Serializable {
         this.pryCorreotenico = proyectoDto.getCorreoLiderTecnico();
         this.pryCorreousuario = proyectoDto.getCorreoLiderUsuario();
         this.pryEstado = proyectoDto.getEstado();
-        if (proyectoDto.getInicioEsperado()!= null && proyectoDto.getFinalEsperado()!= null) {
-            LocalDateTime inicioEsperado = LocalDateTime.parse(proyectoDto.getInicioEsperado(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-            LocalDateTime finalEsperado = LocalDateTime.parse(proyectoDto.getFinalEsperado(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-            LocalDateTime inicioReal = LocalDateTime.parse(proyectoDto.getInicioReal(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-            LocalDateTime finalReal = LocalDateTime.parse(proyectoDto.getFinalReal(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-            this.pryFinalesperado = Date.from(inicioEsperado.atZone(ZoneId.systemDefault()).toInstant());
-            this.pryFinalreal = Date.from(finalReal.atZone(ZoneId.systemDefault()).toInstant());
-            this.pryInicioreal = Date.from(inicioReal.atZone(ZoneId.systemDefault()).toInstant());
-            this.pyrInicioesperado = Date.from(inicioEsperado.atZone(ZoneId.systemDefault()).toInstant());
-        }
-        
+        this.pryFinalreal = Date.from(proyectoDto.getFinalEsperado().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.pryInicioreal = Date.from(proyectoDto.getInicioReal().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.pyrInicioesperado = Date.from(proyectoDto.getFinalReal().atStartOfDay(ZoneId.systemDefault()).toInstant());
         this.pryId = proyectoDto.getId();
         this.pryLiderusuario = proyectoDto.getLiderUsuario();
         this.pryNombre = proyectoDto.getNombre();

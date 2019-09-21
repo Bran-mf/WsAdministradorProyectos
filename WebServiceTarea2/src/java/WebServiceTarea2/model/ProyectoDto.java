@@ -5,6 +5,7 @@
  */
 package WebServiceTarea2.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -24,15 +25,15 @@ public class ProyectoDto {
     private String patrocinador;
     private String liderUsuario;
     private String liderTectnico;
-    private String inicioEsperado;
-    private String finalEsperado;
+    private LocalDate inicioEsperado;
+    private LocalDate finalEsperado;
     private String estado;
     private String correoLiderUsuario;
     private String correoLiderTecnico;
     private String correoPatrocinador;
     private Long version;
-    private String inicioReal;
-    private String finalReal;
+    private LocalDate inicioReal;
+    private LocalDate finalReal;
     
     
     //constructores
@@ -40,7 +41,7 @@ public class ProyectoDto {
     public ProyectoDto() {
     }
 
-    public ProyectoDto(Long id, String nombre, String patrocinador, String liderUsuario, String liderTectnico, String inicioEsperado, String finalEsperado, String estado, String correoLiderUsuario, String correoLiderTecnico, String correoPatrocinador, Long version, String inicioReal, String finalReal) {
+    public ProyectoDto(Long id, String nombre, String patrocinador, String liderUsuario, String liderTectnico, LocalDate inicioEsperado, LocalDate finalEsperado, String estado, String correoLiderUsuario, String correoLiderTecnico, String correoPatrocinador, Long version, LocalDate inicioReal, LocalDate finalReal) {
         this.id = id;
         this.nombre = nombre;
         this.patrocinador = patrocinador;
@@ -64,27 +65,10 @@ public class ProyectoDto {
         this.patrocinador = proyecto.getPryPatrocinador();
         this.liderUsuario = proyecto.getPryLiderusuario();
         this.liderTectnico = proyecto.getPyrLidertecnico();
-        if (proyecto.getPryInicioreal()!= null && proyecto.getPryFinalesperado()!= null && proyecto.getPryFinalesperado()!= null) {
-            LocalDateTime localDateTime = proyecto.getPryFinalesperado().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            this.finalEsperado = localDateTime.toLocalTime().toString();
-
-            LocalDateTime localDateTime2 = proyecto.getPryFinalreal().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            this.finalReal = localDateTime2.toLocalTime().toString();
-            
-            LocalDateTime localDateTime3 = proyecto.getPryInicioreal().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            this.inicioReal = localDateTime3.toLocalTime().toString();
-            
-            LocalDateTime localDateTime4 = proyecto.getPyrInicioesperado().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-            this.inicioEsperado = localDateTime3.toLocalTime().toString();
-        }
+        this.finalEsperado = proyecto.getPryFinalesperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.finalReal = proyecto.getPryFinalreal().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.inicioReal = proyecto.getPryInicioreal().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        this.inicioEsperado = proyecto.getPyrInicioesperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         this.correoLiderTecnico= proyecto.getPryCorreotenico();
         this.correoLiderUsuario = proyecto.getPryCorreousuario();
         this.correoPatrocinador = proyecto.getPryCorreopatrocinador();
@@ -138,19 +122,19 @@ public class ProyectoDto {
         this.liderTectnico = liderTectnico;
     }
 
-    public String getInicioEsperado() {
+    public LocalDate getInicioEsperado() {
         return inicioEsperado;
     }
 
-    public void setInicioEsperado(String inicioEsperado) {
+    public void setInicioEsperado(LocalDate inicioEsperado) {
         this.inicioEsperado = inicioEsperado;
     }
 
-    public String getFinalEsperado() {
+    public LocalDate getFinalEsperado() {
         return finalEsperado;
     }
 
-    public void setFinalEsperado(String finalEsperado) {
+    public void setFinalEsperado(LocalDate finalEsperado) {
         this.finalEsperado = finalEsperado;
     }
 
@@ -194,19 +178,19 @@ public class ProyectoDto {
         this.version = version;
     }
 
-    public String getInicioReal() {
+    public LocalDate getInicioReal() {
         return inicioReal;
     }
 
-    public void setInicioReal(String inicioReal) {
+    public void setInicioReal(LocalDate inicioReal) {
         this.inicioReal = inicioReal;
     }
 
-    public String getFinalReal() {
+    public LocalDate getFinalReal() {
         return finalReal;
     }
 
-    public void setFinalReal(String finalReal) {
+    public void setFinalReal(LocalDate finalReal) {
         this.finalReal = finalReal;
     }
     
