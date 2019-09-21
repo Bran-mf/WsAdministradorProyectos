@@ -112,6 +112,8 @@ public class AdministradorService {
                 Administrador = em.merge(Administrador);
             } else {
                 Administrador = new Administrador(AdministradorDto);
+                Administrador.setAdmEstado("i");
+                Administrador.setAdmVersion(new Long(1));
                 em.persist(Administrador);
             }
             em.flush();
