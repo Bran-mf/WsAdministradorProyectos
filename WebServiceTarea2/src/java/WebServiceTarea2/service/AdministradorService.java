@@ -64,6 +64,7 @@ public class AdministradorService {
     
     public Respuesta validarAdministrador(String usuario, String clave) {
         try {
+
             //Se genera la QUERY
             Query qryActividad = em.createNamedQuery("Administrador.findbyUsuClave", Administrador.class);
             // Se le setean parametros a la QUERY
@@ -71,6 +72,13 @@ public class AdministradorService {
             qryActividad.setParameter("admUsuario", usuario);
             // Obtengo el Administrador desde BD y se lo seteo en el objeto resultado de la rspuesta con sus respectivos parámetros
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "AdministradorDto", (AdministradorDto) new AdministradorDto((Administrador) qryActividad.getSingleResult()));
+
+            Query qryActividad = em.createNamedQuery("Administrador.findbyUsuClave", Administrador.class);
+            qryActividad.setParameter("usuario", usuario);
+            qryActividad.setParameter("clave", clave);
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administrador", new AdministradorDto((Administrador) qryActividad.getSingleResult()));
+
         } catch (NoResultException ex) {
             return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un Administrador con las credenciales ingresadas.", "validarAdministrador NoResultException");
         } catch (NonUniqueResultException ex) {
@@ -263,4 +271,6 @@ public class AdministradorService {
             return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
         }
     }*/
+    
+   
 }
