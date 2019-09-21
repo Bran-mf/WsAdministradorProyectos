@@ -64,9 +64,9 @@ public class AdministradorService {
     
     public Respuesta validarAdministrador(String usuario, String clave) {
         try {
-            Query qryActividad = em.createNamedQuery("Administrador.findByUsuClave", Administrador.class);
-            qryActividad.setParameter("adnUsuario ", usuario);
-            qryActividad.setParameter("adnContrasena", clave);
+            Query qryActividad = em.createNamedQuery("Administrador.findbyUsuClave", Administrador.class);
+            qryActividad.setParameter("usuario", usuario);
+            qryActividad.setParameter("clave", clave);
 
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administrador", new AdministradorDto((Administrador) qryActividad.getSingleResult()));
 
@@ -262,4 +262,6 @@ public class AdministradorService {
             return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
         }
     }*/
+    
+   
 }

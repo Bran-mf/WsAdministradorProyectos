@@ -90,6 +90,21 @@ public class WS {
         }
     }
 
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "ValidarUsuario")
+    public Respuesta ValidarUsuario(@WebParam(name = "usuario") String usuario, @WebParam(name = "pass") String pass) {
+        //TODO write your implementation code here:
+        try{
+            Respuesta res = adminService.validarAdministrador(usuario, pass);
+            return res;
+        }catch(Exception ex){
+            printStackTrace();
+            return null;
+        }
+    }
+
 
 
 }
