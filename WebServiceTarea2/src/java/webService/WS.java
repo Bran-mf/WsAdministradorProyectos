@@ -38,6 +38,20 @@ public class WS {
         return "Administrador: " + Administrador + " Contraseña: " + contrasenna;
     }
 
+    
+    @WebMethod(operationName = "getAdmin")
+    public AdministradorDto getAdmin(@WebParam(name = "usu") String usu, @WebParam(name = "contra") String contra) {
+        Administrador admin;
+        AdministradorDto adminDto = null;
+        if((usu!=null && !usu.isEmpty()) && (contra!=null && !contra.isEmpty())){
+            admin = adminService.getAdmin(usu, contra);
+            if(admin!=null){
+                adminDto = new AdministradorDto(admin);
+            }
+        }
+        return adminDto;
+    }
+    
     @WebMethod(operationName = "getUsuario")
     public Respuesta getUsuario(@WebParam(name = "usuario") String usuario, @WebParam(name = "clave") String clave) {
         try {
@@ -76,7 +90,7 @@ public class WS {
             return "Error al eliminar el Administrador";
         }
     }
-    @WebMethod(operationName = "getAdministradorById")
+    /*@WebMethod(operationName = "getAdministradorById")
     public AdministradorDto getAdminById(@WebParam(name = "adminId") Long adminId) {
         Administrador admin = adminService.getAdmin(adminId);
         if(admin!=null && admin.getAdmId()!=null){
@@ -85,7 +99,7 @@ public class WS {
         } else {
             return null;
         }
-    }
+    }*/
     
     @WebMethod(operationName = "getProyectoPorID") //este regresa el proyecto buscado por id
     public ProyectoDto getProyectoPorID(@WebParam(name = "id") int id) {
