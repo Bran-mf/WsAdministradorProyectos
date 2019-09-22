@@ -113,9 +113,24 @@ public class WS {
             Respuesta res = adminService.validarAdministrador(usuario, pass);
             return res;
         }catch(Exception ex){
-            printStackTrace();
+            ex.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "guardarProyecto")
+    public Respuesta guardarProyecto(@WebParam(name = "ProyectoDto") ProyectoDto ProyectoDto) {
+        //TODO write your implementation code here:
+        try{
+            Respuesta res = proyectoService.GuardarProyecto(ProyectoDto);
+            return res;
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 

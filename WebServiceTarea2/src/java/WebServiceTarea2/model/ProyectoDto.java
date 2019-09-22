@@ -5,6 +5,7 @@
  */
 package WebServiceTarea2.model;
 
+import WebServiceTarea2.util.LocalDateAdapter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -12,6 +13,7 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
@@ -25,14 +27,18 @@ public class ProyectoDto {
     private String patrocinador;
     private String liderUsuario;
     private String liderTectnico;
+     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate inicioEsperado;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate finalEsperado;
     private String estado;
     private String correoLiderUsuario;
     private String correoLiderTecnico;
     private String correoPatrocinador;
     private Long version;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate inicioReal;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate finalReal;
     
     
@@ -75,6 +81,22 @@ public class ProyectoDto {
         this.version = proyecto.getPryVersion();
         this.estado= proyecto.getPryEstado();           
     }
+//    public  void Actuallizar(ProyectoDto proyecto){
+//
+//        this.nombre = proyecto.getNombre();
+//        this.patrocinador = proyecto.getPatrocinador();
+//        this.liderUsuario = proyecto.getLiderUsuario();
+//        this.liderTectnico = proyecto.getLiderTectnico();
+//        this.finalEsperado = proyecto.getFinalEsperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        this.finalReal = Date.from(proyecto.getFinalReal().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+//        this.inicioReal = proyecto.getInicioReal().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        this.inicioEsperado = proyecto.getInicioEsperado()
+//        this.correoLiderTecnico= proyecto.getCorreoLiderTecnico();
+//        this.correoLiderUsuario = proyecto.getCorreoLiderUsuario();
+//        this.correoPatrocinador = proyecto.getCorreoPatrocinador();
+//        this.version = proyecto.getVersion();
+//        this.estado= proyecto.getEstado();           
+//    }
     /*public Proyecto getModel(){
         return new Proyecto(id, nombre, patrocinador, liderUsuario, liderTectnico, inicioEsperado, finalEsperado, estado, correoLiderUsuario, correoLiderTecnico, correoPatrocinador, version);
     }*/
@@ -121,19 +143,19 @@ public class ProyectoDto {
     public void setLiderTectnico(String liderTectnico) {
         this.liderTectnico = liderTectnico;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getInicioEsperado() {
         return inicioEsperado;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setInicioEsperado(LocalDate inicioEsperado) {
         this.inicioEsperado = inicioEsperado;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getFinalEsperado() {
         return finalEsperado;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setFinalEsperado(LocalDate finalEsperado) {
         this.finalEsperado = finalEsperado;
     }
@@ -177,19 +199,19 @@ public class ProyectoDto {
     public void setVersion(Long version) {
         this.version = version;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getInicioReal() {
         return inicioReal;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setInicioReal(LocalDate inicioReal) {
         this.inicioReal = inicioReal;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getFinalReal() {
         return finalReal;
     }
-
+  @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public void setFinalReal(LocalDate finalReal) {
         this.finalReal = finalReal;
     }
