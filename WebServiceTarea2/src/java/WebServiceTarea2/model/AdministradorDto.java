@@ -17,113 +17,110 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class AdministradorDto {
     
-    private Long ID;
-    private String nombre;
-    private String pApellido;
-    private String sApellido;
-    private String cedula;
-    private String correo;
-    private String usuario;
-    private String clave;
-    private String estado;
-    private Long version;
-    
-    public AdministradorDto(){
-        
-    }
-   
-    public AdministradorDto(Administrador adm){
-        this.ID = adm.getAdmId();
-        this.clave = adm.getAdmClave();
-        this.correo = adm.getAdmCorreo();
-        this.estado = adm.getAdmEstado();
-        this.nombre = adm.getAdmNombre();
-        this.pApellido = adm.getAdmPapellido();
-        this.sApellido = adm.getAdmSapellido();
-        this.usuario = adm.getAdmUsuario();
-        this.version = adm.getAdmVersion();
-        this.cedula = adm.getAdmCedula();
-    }
+   private Long adnId;
+    public String adnNombre;
+    public String adnPapellido;
+    public String adnSapellido;
+    public String adnCedula;
+    public String adnCorreo;
+    public String adnUsuario;
+    public String adnContrasena;
+    public String adnEstado;
+    public Long adnVersion;
 
-    public Long getID() {
-        return ID;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getpApellido() {
-        return pApellido;
-    }
-
-    public void setpApellido(String pApellido) {
-        this.pApellido = pApellido;
-    }
-
-    public String getsApellido() {
-        return sApellido;
-    }
-
-    public void setsApellido(String sApellido) {
-        this.sApellido = sApellido;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getClave() {
-        return clave;
-    }
-
-    public void setClave(String clave) {
-        this.clave = clave;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
+    public AdministradorDto() {
     }
     
-    
+    public AdministradorDto(Administrador admin) {
+        this.adnCedula = admin.getAdnCedula();
+        this.adnContrasena = admin.getAdnContrasena();
+        this.adnCorreo = admin.getAdnCorreo();
+        this.adnEstado = admin.getAdnEstado();
+        this.adnId = admin.getAdnId();
+        this.adnNombre =  admin.getAdnNombre();
+        this.adnPapellido = admin.getAdnPapellido();
+        this.adnSapellido = admin.getAdnSapellido();
+        this.adnUsuario = admin.getAdnUsuario();
+        this.adnVersion = admin.getAdnVersion();
+    }
+
+    public Long getAdnId() {
+        return adnId;
+    }
+
+    public void setAdnId(Long adnId) {
+        this.adnId = adnId;
+    }
+
+    public String getAdnNombre() {
+        return adnNombre;
+    }
+
+    public void setAdnNombre(String adnNombre) {
+        this.adnNombre = adnNombre;
+    }
+
+    public String getAdnPapellido() {
+        return adnPapellido;
+    }
+
+    public void setAdnPapellido(String adnPapellido) {
+        this.adnPapellido = adnPapellido;
+    }
+
+    public String getAdnSapellido() {
+        return adnSapellido;
+    }
+
+    public void setAdnSapellido(String adnSapellido) {
+        this.adnSapellido = adnSapellido;
+    }
+
+    public String getAdnCedula() {
+        return adnCedula;
+    }
+
+    public void setAdnCedula(String adnCedula) {
+        this.adnCedula = adnCedula;
+    }
+
+    public String getAdnCorreo() {
+        return adnCorreo;
+    }
+
+    public void setAdnCorreo(String adnCorreo) {
+        this.adnCorreo = adnCorreo;
+    }
+
+    public String getAdnUsuario() {
+        return adnUsuario;
+    }
+
+    public void setAdnUsuario(String adnUsuario) {
+        this.adnUsuario = adnUsuario;
+    }
+
+    public String getAdnContrasena() {
+        return adnContrasena;
+    }
+
+    public void setAdnContrasena(String adnContrasena) {
+        this.adnContrasena = adnContrasena;
+    }
+
+    public String getAdnEstado() {
+        return adnEstado;
+    }
+
+    public void setAdnEstado(String adnEstado) {
+        this.adnEstado = adnEstado;
+    }
+
+    public Long getAdnVersion() {
+        return adnVersion;
+    }
+
+    public void setAdnVersion(Long adnVersion) {
+        this.adnVersion = adnVersion;
+    }
 }
