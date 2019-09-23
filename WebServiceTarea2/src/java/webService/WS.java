@@ -90,6 +90,38 @@ public class WS {
             return "Error al eliminar el Administrador";
         }
     }
+    
+    @WebMethod(operationName = "guardarProyecto")
+    public Respuesta guardarProyecto(@WebParam(name = "proyecto") ProyectoDto proyecto) {
+        //TODO write your implementation code here:
+        try {
+            Respuesta respuesta = proyectoService.guardarProyecto(proyecto);
+            return respuesta;
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Error guardando Proyecto", ex.getMessage());
+        }
+    }
+
+    /**
+     * Web service operation
+     * @param ID
+     * @return 
+     */
+    @WebMethod(operationName = "eliminarProyecto")
+    public String eliminarProyecto(@WebParam(name = "ID") Long ID) {
+       try {
+            Respuesta respuesta = proyectoService.eliminarProyecto(ID);
+            if (!respuesta.getEstado()) {
+                return respuesta.getMensaje();
+            }
+            return respuesta.getMensaje();
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return "Error al eliminar el Administrador";
+        }
+    }
+    
     /*@WebMethod(operationName = "getAdministradorById")
     public AdministradorDto getAdminById(@WebParam(name = "adminId") Long adminId) {
         Administrador admin = adminService.getAdmin(adminId);
@@ -101,7 +133,7 @@ public class WS {
         }
     }*/
     
-    @WebMethod(operationName = "getProyectoPorID") //este regresa el proyecto buscado por id
+    /*@WebMethod(operationName = "getProyectoPorID") //este regresa el proyecto buscado por id
     public ProyectoDto getProyectoPorID(@WebParam(name = "id") int id) {
         try{
             Respuesta res =  proyectoService.buscarProyecto(id);
@@ -115,7 +147,7 @@ public class WS {
             printStackTrace();
             return null;
         }
-    }
+    }*/
 
     /**
      * Web service operation
@@ -127,24 +159,9 @@ public class WS {
             Respuesta res = adminService.validarAdministrador(usuario, pass);
             return res;
         }catch(Exception ex){
-            ex.printStackTrace();
+            printStackTrace();
             return null;
         }
-    }
-
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "guardarProyecto")
-    public Respuesta guardarProyecto(@WebParam(name = "ProyectoDto") ProyectoDto ProyectoDto) {
-        //TODO write your implementation code here:
-        try{
-            Respuesta res = proyectoService.GuardarProyecto(ProyectoDto);
-            return res;
-        }catch(Exception ex){
-            ex.printStackTrace();
-        }
-        return null;
     }
 
 
