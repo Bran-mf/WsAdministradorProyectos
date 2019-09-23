@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,86 +31,76 @@ import javax.persistence.Query;
  */
 @Stateless
 @LocalBean
-public class ProyectoService  {
+public class ProyectoService {
+    private static final Logger LOG = Logger.getLogger(ProyectoService.class.getName());//imprime el error en payara
     @PersistenceContext(unitName = "WebServiceTarea2PU")
-    private EntityManager em ;
+    private EntityManager em;
     
-    public Respuesta buscarProyecto(int id){
-       
-        BigDecimal temporal = BigDecimal.valueOf(id);
-        try{
-            Query query = em.createNamedQuery("Proyecto.findByPryId");
-            query.setParameter("pryId", temporal);           
-            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","","proyecto", new ProyectoDto((Proyecto) query.getSingleResult()));
-        } catch (NoResultException ex){
-            printStackTrace();
-            return new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"No existe Proyecto con las credenciales insertadas","validar id, no result exception");           
-        } catch(Exception ex){    
-            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error","algo paso");
-        }
-    }
-    
-    public Respuesta cargarProyectoes() {
+    public Respuesta getProyectos() {
         try {
-            Query query = em.createNamedQuery("Proyecto.findAll");
-            List<Proyecto> proyectoList = query.getResultList();
-            List<ProyectoDto> proyectoDtoList = new ArrayList<>();
-            for (Proyecto proyecto : proyectoList) {
-                proyectoDtoList.add(new ProyectoDto(proyecto));
+            Query qryProyecto = em.createNamedQuery("Proyecto.findAll", Proyecto.class);
+            List<Proyecto> proyectos = qryProyecto.getResultList();
+            List<ProyectoDto> proyectosDto = new ArrayList<>();
+            for (Proyecto proyecto : proyectos) {
+                proyectosDto.add(new ProyectoDto(proyecto));
             }
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Proyectoes", proyectoDtoList);
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Proyectos", proyectosDto);
+
         } catch (NoResultException ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no existen proyectoes en este momento", "No ResultException");
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existen Proyectos con los criterios ingresados.", "getProyectos NoResultException");
         } catch (Exception ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "error desconocido", "excepton");
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Proyecto.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Proyecto.", "getProyecto " + ex.getMessage());
         }
     }
 
-    public Respuesta GuardarProyecto(ProyectoDto proyectoDto) {
+    public Respuesta guardarProyecto(ProyectoDto ProyectoDto) {
         try {
-            Proyecto proyecto;
-            if (proyectoDto.getId()!= null && proyectoDto.getId() > 0) {
-                proyecto = em.find(Proyecto.class, proyectoDto.getId());
-                if (proyecto == null) {
-                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontro el empleado a modificar", "guardar empleado NoResult");
-                }
-                proyecto.actualizarProyecto(proyectoDto);
-                em.persist(proyecto);
-            } else {
-                proyecto = new Proyecto(proyectoDto);
-                em.persist(proyecto);
-            }
-            em.flush();
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "proyecto", new ProyectoDto(proyecto));
-        } catch (Exception ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el empleado", "guardar empleado");
-        }
+            Proyecto Proyecto;
+            if (ProyectoDto.getProId() != null && ProyectoDto.getProId() > 0) {
+                Proyecto = em.find(Proyecto.class, ProyectoDto.getProId());
 
+                if (Proyecto == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encrontró el Proyecto a modificar.", "guardarProyecto NoResultException");
+                }
+                Proyecto.actualizarProyecto(ProyectoDto);
+                Proyecto = em.merge(Proyecto);
+                
+            } else {
+                Proyecto = new Proyecto(ProyectoDto);
+                em.persist(Proyecto);
+            }
+
+            em.flush();
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "Proyecto guardado exitosamente", "", "Proyecto", new ProyectoDto(Proyecto));
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al guardar el Proyecto.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el Proyecto.", "guardarProyecto " + ex.getMessage());
+        }
     }
 
-    public Respuesta eliminarAdmnistrador(Long id) {
+    public Respuesta eliminarProyecto(Long id) {
         try {
-            Proyecto proyecto;
-            if (id != 0 && id > 0) {
-                proyecto = em.find(Proyecto.class, id);
-                if (proyecto == null) {
-                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no se encontro el proyecto que desea eliminar", "Objetivo a eliminar no encontrado");
-
+            //Empleado empleado;
+            Proyecto Proyecto;
+            if (id != null && id > 0) {
+                Proyecto = em.find(Proyecto.class, id);
+                if (Proyecto == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontró el Proyecto a eliminar.", "EliminarProyecto NoResultException");
                 }
-                em.remove(proyecto);
-
+                em.remove(Proyecto);
             } else {
-                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Debe de seleccionar un empleado a eliminar ", "no se entro un id valido");
+                return new Respuesta(false, CodigoRespuesta.ERROR_CLIENTE, "Debe cargar el Proyecto a eliminar.", "EliminarProyecto NoResultException");
             }
-            em.flush();
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "");
-
         } catch (Exception ex) {
-            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {// relaciones con otras entidades
-                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "El Proyecto tiene relaciones con otros registros, no se pudo eliminar", "depedenciade entidades");
+            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {
+                return new Respuesta(false, CodigoRespuesta.ERROR_PERMISOS, "No se puede eliminar el Proyecto porque tiene relaciones con otros registros.", "EliminarProyecto " + ex.getMessage());
             }
-            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
+            Logger.getLogger(ProyectoService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el Proyecto.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Proyecto.", "EliminarProyecto " + ex.getMessage());
         }
     }
-    
 }
