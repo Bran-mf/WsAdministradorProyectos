@@ -6,12 +6,13 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -137,58 +138,66 @@ public class Proyecto implements Serializable {
 
     public void actualizarProyecto(ProyectoDto proyectoDto){
     
-        this.pryCorreopatrocinador = proyectoDto.getCorreoPatrocinador();
-        this.pryCorreotenico = proyectoDto.getCorreoLiderTecnico();
-        this.pryCorreousuario = proyectoDto.getCorreoLiderUsuario();
-        this.pryEstado = proyectoDto.getEstado();
-        this.pryFinalreal = Date.from(proyectoDto.getFinalEsperado().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        this.pryInicioreal = Date.from(proyectoDto.getInicioReal().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        this.pyrInicioesperado = Date.from(proyectoDto.getFinalReal().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        this.pryId = proyectoDto.getId();
-        this.pryLiderusuario = proyectoDto.getLiderUsuario();
-        this.pryNombre = proyectoDto.getNombre();
-        this.pryPatrocinador = proyectoDto.getPatrocinador();
-        this.pryVersion = proyectoDto.getVersion();
-        this.pyrLidertecnico = proyectoDto.getLiderTectnico();
+        this.pryCorreopatrocinador = proyectoDto.getProCorreopatrocinador();
+        this.pryCorreotenico = proyectoDto.getProCorreotecnico();
+        this.pryCorreousuario = proyectoDto.getProCorreousuario();
+        this.pryEstado = proyectoDto.getProEstado();
+        
+        LocalDate fechFinal = LocalDate.parse(proyectoDto.getProFechafinal(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate fechFinalReal = LocalDate.parse(proyectoDto.getProFechafinreal(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate fechIni = LocalDate.parse(proyectoDto.getProFechainicio(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate fechIniReal = LocalDate.parse(proyectoDto.getProFechainireal(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        
+        this.pryFinalreal = Date.from(fechFinalReal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.pryInicioreal =  Date.from(fechIniReal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.pyrInicioesperado = Date.from(fechFinal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.pyrInicioesperado = Date.from(fechIni.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        
+        this.pryId = proyectoDto.getProId();
+        this.pryLiderusuario = proyectoDto.getProLiderusuario();
+        this.pryNombre = proyectoDto.getProNombre();
+        this.pryPatrocinador = proyectoDto.getProPatrocinador();
+        this.pryVersion = proyectoDto.getProVersion();
+        this.pyrLidertecnico = proyectoDto.getProLidertecnico();
         //this.actividadesList
         //this.seguimientoList
     }
     public Proyecto( ProyectoDto proyectoDto ){
     
-        this.pryId = proyectoDto.getId();
+        this.pryId = proyectoDto.getProId();
         actualizarProyecto(proyectoDto);
         
     }
     
-    public Long getPryId() {
+    public Long getProId() {
         return pryId;
     }
 
-    public void setPryId(Long pryId) {
+    public void setProId(Long pryId) {
         this.pryId = pryId;
     }
 
-    public String getPryNombre() {
+    public String getProNombre() {
         return pryNombre;
     }
 
-    public void setPryNombre(String pryNombre) {
+    public void setProNombre(String pryNombre) {
         this.pryNombre = pryNombre;
     }
 
-    public String getPryPatrocinador() {
+    public String getProPatrocinador() {
         return pryPatrocinador;
     }
 
-    public void setPryPatrocinador(String pryPatrocinador) {
+    public void setProPatrocinador(String pryPatrocinador) {
         this.pryPatrocinador = pryPatrocinador;
     }
 
-    public String getPryLiderusuario() {
+    public String getProLiderusuario() {
         return pryLiderusuario;
     }
 
-    public void setPryLiderusuario(String pryLiderusuario) {
+    public void setProLiderusuario(String pryLiderusuario) {
         this.pryLiderusuario = pryLiderusuario;
     }
 
@@ -208,67 +217,67 @@ public class Proyecto implements Serializable {
         this.pyrInicioesperado = pyrInicioesperado;
     }
 
-    public Date getPryInicioreal() {
+    public Date getProInicioreal() {
         return pryInicioreal;
     }
 
-    public void setPryInicioreal(Date pryInicioreal) {
+    public void setProInicioreal(Date pryInicioreal) {
         this.pryInicioreal = pryInicioreal;
     }
 
-    public Date getPryFinalesperado() {
+    public Date getProFinalesperado() {
         return pryFinalesperado;
     }
 
-    public void setPryFinalesperado(Date pryFinalesperado) {
+    public void setProFinalesperado(Date pryFinalesperado) {
         this.pryFinalesperado = pryFinalesperado;
     }
 
-    public Date getPryFinalreal() {
+    public Date getProFinalreal() {
         return pryFinalreal;
     }
 
-    public void setPryFinalreal(Date pryFinalreal) {
+    public void setProFinalreal(Date pryFinalreal) {
         this.pryFinalreal = pryFinalreal;
     }
 
-    public String getPryEstado() {
+    public String getProEstado() {
         return pryEstado;
     }
 
-    public void setPryEstado(String pryEstado) {
+    public void setProEstado(String pryEstado) {
         this.pryEstado = pryEstado;
     }
 
-    public String getPryCorreousuario() {
+    public String getProCorreousuario() {
         return pryCorreousuario;
     }
 
-    public void setPryCorreousuario(String pryCorreousuario) {
+    public void setProCorreousuario(String pryCorreousuario) {
         this.pryCorreousuario = pryCorreousuario;
     }
 
-    public String getPryCorreotenico() {
+    public String getProCorreotenico() {
         return pryCorreotenico;
     }
 
-    public void setPryCorreotenico(String pryCorreotenico) {
+    public void setProCorreotenico(String pryCorreotenico) {
         this.pryCorreotenico = pryCorreotenico;
     }
 
-    public String getPryCorreopatrocinador() {
+    public String getProCorreopatrocinador() {
         return pryCorreopatrocinador;
     }
 
-    public void setPryCorreopatrocinador(String pryCorreopatrocinador) {
+    public void setProCorreopatrocinador(String pryCorreopatrocinador) {
         this.pryCorreopatrocinador = pryCorreopatrocinador;
     }
 
-    public Long getPryVersion() {
+    public Long getProVersion() {
         return pryVersion;
     }
 
-    public void setPryVersion(Long pryVersion) {
+    public void setProVersion(Long pryVersion) {
         this.pryVersion = pryVersion;
     }
 
