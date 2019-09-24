@@ -103,23 +103,4 @@ public class ProyectoService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Proyecto.", "EliminarProyecto " + ex.getMessage());
         }
     }
-
-    public Respuesta BuscarFiltrado(String nombre,String patrocinador,String estado){
-        try{
-            Query query = em.createNamedQuery("Proyecto.findByPatNomEst");
-            query.setParameter("nombre",nombre);
-            query.setParameter("estado", estado);
-            query.setParameter("patrocinador", patrocinador);
-            List<Proyecto> listaProyectos = query.getResultList();
-            List<ProyectoDto> listProyectosDto  = new ArrayList<>();
-            for(Proyecto proyecto:listaProyectos){
-                listProyectosDto.add(new ProyectoDto(proyecto));
-            }
-            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","","Proyectos",listProyectosDto);
-        } catch (NoResultException ex){
-            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no se encontro ningun resultado", "NoResultException Service Web");
-        } catch (Exception ex){
-            return new Respuesta (false,CodigoRespuesta.ERROR_INTERNO,"error interno","Error Exception Service web");
-        }
-    }
 }
