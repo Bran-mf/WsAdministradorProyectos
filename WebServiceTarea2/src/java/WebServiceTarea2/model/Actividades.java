@@ -6,7 +6,10 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -46,6 +49,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Actividades.findByActVersion", query = "SELECT a FROM Actividades a WHERE a.actVersion = :actVersion")})
 public class Actividades implements Serializable {
 
+    
+    @Basic(optional = false)
+    @Column(name = "ACT_ORDEN")
+    private Integer actOrden;
+    @Basic(optional = false)
+    @Column(name = "ACT_VERSION")
+    private Long actVersion;
+    @JoinColumn(name = "SEG_PRO", referencedColumnName = "PRO_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Proyecto segPro;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -77,15 +91,6 @@ public class Actividades implements Serializable {
     @Column(name = "ACT_FINALESPERADO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date actFinalesperado;
-    @Basic(optional = false)
-    @Column(name = "ACT_ORDEN")
-    private Integer actOrden;
-    @Basic(optional = false)
-    @Column(name = "ACT_VERSION")
-    private Long actVersion;
-    @JoinColumn(name = "PRY_ID", referencedColumnName = "PRY_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Proyecto pryId;
 
     public Actividades() {
     }
@@ -114,22 +119,19 @@ public class Actividades implements Serializable {
         this.actDescripcion = act.getDescripcion();
         this.actEncargado = act.getEncargado();
         this.actEstado = act.getEstado();
-        this.actFinalesperado = Date.from(act.getFinalEsperado().atStartOfDay()
-      .atZone(ZoneId.systemDefault())
-      .toInstant());
-        this.actFinalreal = Date.from(act.getFinalReal().atStartOfDay()
-      .atZone(ZoneId.systemDefault())
-      .toInstant());
-        this.actInicioesperado = Date.from(act.getInicioEsperado().atStartOfDay()
-      .atZone(ZoneId.systemDefault())
-      .toInstant());
-        this.actInicioreal = Date.from(act.getInicioReal().atStartOfDay()
-      .atZone(ZoneId.systemDefault())
-      .toInstant());
+        LocalDate fechFinal = LocalDate.parse(act.getFinalEsperado(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate fechFinalReal = LocalDate.parse(act.getFinalReal(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate fechIni = LocalDate.parse(act.getInicioEsperado(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        LocalDate fechIniReal = LocalDate.parse(act.getInicioReal(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        
+        this.actFinalesperado = Date.from(fechFinal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.actFinalreal = Date.from(fechFinalReal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.actInicioesperado = Date.from(fechIni.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.actInicioreal =Date.from(fechIniReal.atStartOfDay(ZoneId.systemDefault()).toInstant());
         this.actId = act.getId();
         this.actOrden = act.getOrden();
         this.actVersion = act.getVersion();
-        this.pryId = new Proyecto(act.getProyecto());
+       // this.pryId = new Proyecto(act.getProyecto());
     }
     
     
@@ -213,13 +215,13 @@ public class Actividades implements Serializable {
         this.actVersion = actVersion;
     }
 
-    public Proyecto getPryId() {
+    /*public Proyecto getPryId() {
         return pryId;
     }
 
     public void setPryId(Proyecto pryId) {
         this.pryId = pryId;
-    }
+    }*/
 
     @Override
     public int hashCode() {
@@ -245,5 +247,11 @@ public class Actividades implements Serializable {
     public String toString() {
         return "WebServiceTarea2.model.Actividades[ actId=" + actId + " ]";
     }
-    
+    public Proyecto getSegPro() {
+        return segPro;
+    }
+
+    public void setSegPro(Proyecto segPro) {
+        this.segPro = segPro;
+    }
 }
