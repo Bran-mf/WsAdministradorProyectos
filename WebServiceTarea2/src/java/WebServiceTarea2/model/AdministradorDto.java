@@ -21,7 +21,7 @@ public class AdministradorDto {
     private String adnNombre;
     private String adnPapellido;
     private String adnSapellido;
-   private String adnCedula;
+    private String adnCedula;
     private String adnCorreo;
     private String adnUsuario;
     private String adnContrasena;
@@ -29,6 +29,19 @@ public class AdministradorDto {
     private Long adnVersion;
 
     public AdministradorDto() {
+    }
+    
+    public AdministradorDto(Long adnId, String adnNombre, String adnPapellido, String adnSapellido, String adnCedula, String adnCorreo, String adnUsuario, String adnContrasena, String adnEstado, Long adnVersion) {
+        this.adnId = adnId;
+        this.adnNombre = adnNombre;
+        this.adnPapellido = adnPapellido;
+        this.adnSapellido = adnSapellido;
+        this.adnCedula = adnCedula;
+        this.adnCorreo = adnCorreo;
+        this.adnUsuario = adnUsuario;
+        this.adnContrasena = adnContrasena;
+        this.adnEstado = adnEstado;
+        this.adnVersion = adnVersion;
     }
     
     public AdministradorDto(Administrador admin) {
@@ -44,19 +57,6 @@ public class AdministradorDto {
         this.adnVersion = admin.getAdnVersion();
     }
 
-    public void actualizarAdministrador(AdministradorDto adm){
-        //no poner el id aquí
-        this.adnContrasena = adm.getAdnContrasena();
-        this.adnCorreo = adm.getAdnCorreo();
-        this.adnEstado = adm.getAdnEstado();
-        this.adnNombre = adm.getAdnNombre();
-        this.adnPapellido = adm.getAdnPapellido();
-        this.adnSapellido = adm.getAdnSapellido();
-        this.adnUsuario = adm.getAdnUsuario();
-        this.adnVersion = adm.getAdnVersion();
-        this.adnCedula = adm.getAdnCedula();
-    }
-    
     public Long getAdnId() {
         return adnId;
     }
