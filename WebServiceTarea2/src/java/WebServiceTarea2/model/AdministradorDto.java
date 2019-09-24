@@ -18,15 +18,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AdministradorDto {
     
    private Long adnId;
-    public String adnNombre;
-    public String adnPapellido;
-    public String adnSapellido;
-    public String adnCedula;
-    public String adnCorreo;
-    public String adnUsuario;
-    public String adnContrasena;
-    public String adnEstado;
-    public Long adnVersion;
+    private String adnNombre;
+    private String adnPapellido;
+    private String adnSapellido;
+   private String adnCedula;
+    private String adnCorreo;
+    private String adnUsuario;
+    private String adnContrasena;
+    private String adnEstado;
+    private Long adnVersion;
 
     public AdministradorDto() {
     }
@@ -44,6 +44,19 @@ public class AdministradorDto {
         this.adnVersion = admin.getAdnVersion();
     }
 
+    public void actualizarAdministrador(AdministradorDto adm){
+        //no poner el id aquí
+        this.adnContrasena = adm.getAdnContrasena();
+        this.adnCorreo = adm.getAdnCorreo();
+        this.adnEstado = adm.getAdnEstado();
+        this.adnNombre = adm.getAdnNombre();
+        this.adnPapellido = adm.getAdnPapellido();
+        this.adnSapellido = adm.getAdnSapellido();
+        this.adnUsuario = adm.getAdnUsuario();
+        this.adnVersion = adm.getAdnVersion();
+        this.adnCedula = adm.getAdnCedula();
+    }
+    
     public Long getAdnId() {
         return adnId;
     }

@@ -32,7 +32,7 @@ public class SeguimientoService {
     
      public Respuesta getSeguimiento(long id) {
         try {
-            Query query = em.createNamedQuery("Seguimientoes.findByActId", Seguimiento.class);
+            Query query = em.createNamedQuery("Seguimiento.findByActId", Seguimiento.class);
             query.setParameter("actId", id);
             
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Seguimientoes", new SeguimientoDto((Seguimiento) query.getSingleResult()));
@@ -45,7 +45,7 @@ public class SeguimientoService {
 
     public Respuesta cargarSeguimientoeses() {
         try {
-            Query query = em.createNamedQuery("Seguimientoes.findAll");
+            Query query = em.createNamedQuery("Seguimiento.findAll");
             List<Seguimiento> seguimientoesList = query.getResultList();
             List<SeguimientoDto> seguimientoesDtoList = new ArrayList<>();
             for (Seguimiento seguimientoes : seguimientoesList) {

@@ -1,3 +1,4 @@
+  
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -82,7 +83,7 @@ public class ActividadesService {
 
     }
 
-    public Respuesta eliminarAdmnistrador(Long id) {
+    public Respuesta eliminarActividad(int id) {
         try {
             Actividades actividades;
             if (id != 0 && id > 0) {
@@ -107,5 +108,4 @@ public class ActividadesService {
         }
     }
 }
-
 

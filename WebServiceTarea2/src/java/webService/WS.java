@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,9 +6,11 @@
  */
 package webService;
 
+import WebServiceTarea2.model.ActividadesDto;
 import WebServiceTarea2.model.Administrador;
 import WebServiceTarea2.model.AdministradorDto;
 import WebServiceTarea2.model.ProyectoDto;
+import WebServiceTarea2.service.ActividadesService;
 import WebServiceTarea2.service.AdministradorService;
 import WebServiceTarea2.service.ProyectoService;
 import WebServiceTarea2.util.CodigoRespuesta;
@@ -31,7 +34,8 @@ public class WS {
     ProyectoService proyectoService;
     @EJB
     AdministradorService adminService;
-    
+    @EJB
+    ActividadesService actividadesService ;
      @WebMethod(operationName = "getAdministrador")
     public String getAdministrador(@WebParam(name = "Administrador") String Administrador, @WebParam(name = "contrasenna") String contrasenna) {
         //TODO write your implementation code here:
@@ -90,6 +94,38 @@ public class WS {
             return "Error al eliminar el Administrador";
         }
     }
+    
+    @WebMethod(operationName = "guardarProyecto")
+    public Respuesta guardarProyecto(@WebParam(name = "proyecto") ProyectoDto proyecto) {
+        //TODO write your implementation code here:
+        try {
+            Respuesta respuesta = proyectoService.guardarProyecto(proyecto);
+            return respuesta;
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Error guardando Proyecto", ex.getMessage());
+        }
+    }
+
+    /**
+     * Web service operation
+     * @param ID
+     * @return 
+     */
+    @WebMethod(operationName = "eliminarProyecto")
+    public String eliminarProyecto(@WebParam(name = "ID") Long ID) {
+       try {
+            Respuesta respuesta = proyectoService.eliminarProyecto(ID);
+            if (!respuesta.getEstado()) {
+                return respuesta.getMensaje();
+            }
+            return respuesta.getMensaje();
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return "Error al eliminar el Administrador";
+        }
+    }
+    
     /*@WebMethod(operationName = "getAdministradorById")
     public AdministradorDto getAdminById(@WebParam(name = "adminId") Long adminId) {
         Administrador admin = adminService.getAdmin(adminId);
@@ -101,7 +137,7 @@ public class WS {
         }
     }*/
     
-    @WebMethod(operationName = "getProyectoPorID") //este regresa el proyecto buscado por id
+    /*@WebMethod(operationName = "getProyectoPorID") //este regresa el proyecto buscado por id
     public ProyectoDto getProyectoPorID(@WebParam(name = "id") int id) {
         try{
             Respuesta res =  proyectoService.buscarProyecto(id);
@@ -115,7 +151,7 @@ public class WS {
             printStackTrace();
             return null;
         }
-    }
+    }*/
 
     /**
      * Web service operation
@@ -127,25 +163,64 @@ public class WS {
             Respuesta res = adminService.validarAdministrador(usuario, pass);
             return res;
         }catch(Exception ex){
-            ex.printStackTrace();
-            return null;
+            printStackTrace();
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error  al obtener los datos","Error en operacion web service Exception");
         }
     }
 
     /**
      * Web service operation
      */
-    @WebMethod(operationName = "guardarProyecto")
-    public Respuesta guardarProyecto(@WebParam(name = "ProyectoDto") ProyectoDto ProyectoDto) {
-        //TODO write your implementation code here:
+    @WebMethod(operationName = "guardadActividad")
+    public Respuesta guardadActividad(@WebParam(name = "Actividades") ActividadesDto Actividades) {
         try{
-            Respuesta res = proyectoService.GuardarProyecto(ProyectoDto);
+            Respuesta res =  actividadesService.GuardarActividades(Actividades);
             return res;
         }catch(Exception ex){
-            ex.printStackTrace();
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error  al obtener los datos","Error en operacion web service Exception");
         }
-        return null;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "BuscarActividad")
+    public Respuesta BuscarActividad(@WebParam(name = "Id") int Id) {
+        try{
+            Respuesta res = actividadesService.getActividad(Id);
+            return res;
+        }catch(Exception ex){
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error  al obtener los datos","Error en operacion web service Exception");
+        }
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "BorrarActividad")
+    public Respuesta BorrarActividad(@WebParam(name = "Id") int Id) {
+        try{
+            Respuesta res = actividadesService.eliminarActividad(Id);
+            return res;
+        }catch(Exception ex){
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error  al obtener los datos","Error en operacion web service Exception");
+        }
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "BuscarPorFiltro")
+    public Respuesta BuscarPorFiltro(@WebParam(name = "nombre") String nombre, @WebParam(name = "patrocinador") String patrocinador, @WebParam(name = "estado") String estado) {
+        try{
+            Respuesta res = proyectoService.BuscarFiltrado(nombre, patrocinador, estado);
+            return res;
+        }catch(Exception ex){
+           return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error  al obtener los datos","Error en operacion web service Exception");
+        }
+    }
+    
+    
 
 
 
