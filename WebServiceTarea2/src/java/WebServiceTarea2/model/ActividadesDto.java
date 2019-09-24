@@ -6,7 +6,6 @@
 package WebServiceTarea2.model;
 
 import WebServiceTarea2.util.LocalDateAdapter;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -25,22 +24,18 @@ public class ActividadesDto {
     private String descripcion;
     private String encargado;
     private String estado;
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    private LocalDate inicioEsperado;
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    private LocalDate finalEsperado;
+    private String inicioEsperado;
+    private String finalEsperado;
     private Integer orden;
     private Long version;
     private ProyectoDto proyecto;
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    private LocalDate finalReal;
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
-    private LocalDate inicioReal;
+    private String finalReal;
+    private String inicioReal;
     //metodos
     //get and set
 
     
-    public ActividadesDto(Long id, String descripcion, String estado, LocalDate inicioEsperado, LocalDate finalEsperado, Integer orden, Long version) {
+    public ActividadesDto(Long id, String descripcion, String estado, String inicioEsperado, String finalEsperado, Integer orden, Long version) {
         this.id = id;
         this.descripcion = descripcion;
         this.estado = estado;
@@ -56,22 +51,14 @@ public class ActividadesDto {
         this.id =  actividades.getActId();
         this.descripcion = actividades.getActDescripcion();
         this.estado = actividades.getActEstado();
-        this.inicioEsperado = actividades.getActInicioesperado().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        this.finalEsperado = actividades.getActFinalesperado().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        this.finalReal = actividades.getActFinalreal().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        this.inicioReal = actividades.getActInicioreal().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
+        this.inicioEsperado = actividades.getActInicioesperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+        this.finalEsperado = actividades.getActFinalesperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+        this.finalReal = actividades.getActFinalreal().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+        this.inicioReal = actividades.getActInicioreal().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
         this.orden = actividades.getActOrden();
         this.version = actividades.getActVersion();
         this.encargado = actividades.getActEncargado();
-        this.proyecto = new ProyectoDto(actividades.getPryId());
+        //this.proyecto = new ProyectoDto(actividades.getPryId());
     }
     /*public Actividades getModel(){
         return new Actividades(id, descripcion, estado, estado, inicioEsperado, finalEsperado, orden, version);
@@ -116,19 +103,19 @@ public class ActividadesDto {
         this.estado = estado;
     }
 
-    public LocalDate getInicioEsperado() {
+    public String getInicioEsperado() {
         return inicioEsperado;
     }
 
-    public void setInicioEsperado(LocalDate inicioEsperado) {
+    public void setInicioEsperado(String inicioEsperado) {
         this.inicioEsperado = inicioEsperado;
     }
 
-    public LocalDate getFinalEsperado() {
+    public String getFinalEsperado() {
         return finalEsperado;
     }
 
-    public void setFinalEsperado(LocalDate finalEsperado) {
+    public void setFinalEsperado(String finalEsperado) {
         this.finalEsperado = finalEsperado;
     }
 
@@ -148,19 +135,19 @@ public class ActividadesDto {
         this.version = version;
     }
 
-    public LocalDate getFinalReal() {
+    public String getFinalReal() {
         return finalReal;
     }
 
-    public void setFinalReal(LocalDate finalReal) {
+    public void setFinalReal(String finalReal) {
         this.finalReal = finalReal;
     }
 
-    public LocalDate getInicioReal() {
+    public String getInicioReal() {
         return inicioReal;
     }
 
-    public void setInicioReal(LocalDate inicioReal) {
+    public void setInicioReal(String inicioReal) {
         this.inicioReal = inicioReal;
     }
     
