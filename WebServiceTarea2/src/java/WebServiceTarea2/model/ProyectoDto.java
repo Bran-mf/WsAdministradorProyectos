@@ -35,6 +35,7 @@ public class ProyectoDto {
     private String proFechainicio;
     private String proFechafinal;
     private String proEstado;
+    private AdministradorDto proAdmin;
     private Long proVersion;
 
     public ProyectoDto() {
@@ -48,13 +49,14 @@ public class ProyectoDto {
         this.proEstado = proyecto.getProEstado();
         this.proFechafinreal = proyecto.getProFinalreal().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
         this.proFechainireal = proyecto.getProInicioreal().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
-        this.proFechainicio = proyecto.getPyrInicioesperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+        this.proFechainicio = proyecto.getProInicioesperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
         this.proFechafinal = proyecto.getProFinalesperado().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
         this.proId = proyecto.getProId();
-        this.proLidertecnico = proyecto.getPyrLidertecnico();
+        this.proLidertecnico = proyecto.getProLiderusuario();
         this.proLiderusuario = proyecto.getProLiderusuario();
         this.proNombre = proyecto.getProNombre();
         this.proPatrocinador = proyecto.getProPatrocinador();
+        //this.proAdmin = new AdministradorDto(proyecto.getProAdministrador());
         this.proVersion = proyecto.getProVersion();
     }
 
@@ -170,7 +172,13 @@ public class ProyectoDto {
         this.proVersion = proVersion;
     }
 
+    public AdministradorDto getProAdmin() {
+        return proAdmin;
+    }
+
+    public void setProAdmin(AdministradorDto proAdmin) {
+        this.proAdmin = proAdmin;
+    }
     
-
+    
 }
-
