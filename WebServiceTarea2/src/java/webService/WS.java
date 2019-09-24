@@ -164,6 +164,7 @@ public class WS {
             return res;
         }catch(Exception ex){
             printStackTrace();
+
             return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error  al obtener los datos","Error en operacion web service Exception");
         }
     }
@@ -221,6 +222,7 @@ public class WS {
     }
     
     
+
 
 
 

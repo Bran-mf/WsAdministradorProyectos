@@ -103,6 +103,7 @@ public class ProyectoService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Proyecto.", "EliminarProyecto " + ex.getMessage());
         }
     }
+
     public Respuesta BuscarFiltrado(String nombre,String patrocinador,String estado){
         try{
             Query query = em.createNamedQuery("Proyecto.findByPatNomEst");
