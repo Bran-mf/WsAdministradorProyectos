@@ -6,17 +6,23 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.QueryHint;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,8 +43,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Administrador.findByAdnEstado", query = "SELECT a FROM Administrador a WHERE a.adnEstado = :AdnEstado")
     , @NamedQuery(name = "Administrador.findByAdnVersion", query = "SELECT a FROM Administrador a WHERE a.adnVersion = :AdnVersion")
     , @NamedQuery(name = "Administrador.findByAdnCedula", query = "SELECT a FROM Administrador a WHERE a.adnCedula = :AdnCedula")
-    ,@NamedQuery(name = "Administrador.findByAdnUsClave", query = "SELECT a FROM Administrador a WHERE a.adnUsuario =:adnUsuario AND a.adnContrasena =:adnContrasena")})
+    , @NamedQuery(name = "Administrador.findByUsuClave", query = "SELECT a FROM Administrador a WHERE a.adnUsuario = :adnUsuario and a.adnContrasena = :adnContrasena", hints = @QueryHint(name = "eclipselink.refresh", value = "true"))})
 public class Administrador implements Serializable {
+
+    @Basic(optional = false)
+    @Column(name = "ADN_VERSION")
+    private Long adnVersion;
+    @OneToMany(mappedBy = "adnId", fetch = FetchType.LAZY)
+    private List<Proyecto> proyectoList;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -72,48 +84,43 @@ public class Administrador implements Serializable {
     @Basic(optional = false)
     @Column(name = "ADN_ESTADO")
     private String adnEstado;
-    @Basic(optional = false)
-    @Column(name = "ADN_VERSION")
-    private Long adnVersion;
 
     public Administrador() {
     }
 
     public Administrador(Long admId) {
-        super();
         this.adnId = admId;
     }
 
     public Administrador(Long admId, String AdmNombre, String admPapellido, String admSapellido, String cedula,String admCorreo, String AdmUsuario, String AdmClave, String AdmEstado, Long AdmVersion) {
-        super();
         this.adnId = admId;
         this.adnNombre = AdmNombre;
         this.adnPapellido = admPapellido;
         this.adnSapellido = admSapellido;
+        this.adnCedula = cedula;
         this.adnCorreo = admCorreo;
         this.adnUsuario = AdmUsuario;
         this.adnContrasena = AdmClave;
         this.adnEstado = AdmEstado;
         this.adnVersion = AdmVersion;
-        this.adnCedula = cedula;
+        
     }
     public Administrador(AdministradorDto AdministradorDto) {
-        super();
         this.adnId = AdministradorDto.getAdnId();
         actualizarAdministrador(AdministradorDto);
     }
 
     public void actualizarAdministrador(AdministradorDto adm){
-        //no poner el id aquí
-        this.adnContrasena = adm.getAdnContrasena();
-        this.adnCorreo = adm.getAdnCorreo();
-        this.adnEstado = adm.getAdnEstado();
         this.adnNombre = adm.getAdnNombre();
         this.adnPapellido = adm.getAdnPapellido();
         this.adnSapellido = adm.getAdnSapellido();
-        this.adnUsuario = adm.getAdnUsuario();
-        this.adnVersion = adm.getAdnVersion();
         this.adnCedula = adm.getAdnCedula();
+        this.adnCorreo = adm.getAdnCorreo();
+        this.adnUsuario = adm.getAdnUsuario();
+        this.adnContrasena = adm.getAdnContrasena();
+        this.adnEstado = adm.getAdnEstado();
+        this.adnVersion = adm.getAdnVersion();
+        
     }
 
     public Long getAdnId() {
@@ -220,5 +227,14 @@ public class Administrador implements Serializable {
     public String toString() {
         return "WebServiceTarea2.model.Administrador[ admId=" + adnId + " ]";
     }
-    
+
+    @XmlTransient
+    public List<Proyecto> getProyectoList() {
+        return proyectoList;
+    }
+
+    public void setProyectoList(List<Proyecto> proyectoList) {
+        this.proyectoList = proyectoList;
+    }
+
 }
