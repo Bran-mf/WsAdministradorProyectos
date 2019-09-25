@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SeguimientoDto {
     private Long id;
     private Date fecha; //dia en que se hizo el seguimiento
-    private Double avance; //% del avance
+    private Integer avance; //% del avance
     private Long version;
     ProyectoDto proyecto;
 
@@ -28,7 +28,7 @@ public class SeguimientoDto {
     public SeguimientoDto() {
     }
 
-    public SeguimientoDto(Long id, Date fecha, Double avance, Long version, ProyectoDto proyecto) {
+    public SeguimientoDto(Long id, Date fecha, Integer avance, Long version, ProyectoDto proyecto) {
         this.id = id;
         this.fecha = fecha;
         this.avance = avance;
@@ -40,7 +40,7 @@ public class SeguimientoDto {
         this.fecha = seguimiento.getSegFecha();
         this.avance= seguimiento.getSegAvance();
         this.version= seguimiento.getSegVersion();
-        this.proyecto=  new ProyectoDto(seguimiento.getPryId());
+        //this.proyecto=  new ProyectoDto(seguimiento.getPryId());
     }
     public Seguimiento getModel(){
         return new Seguimiento(id, fecha, avance, version);
@@ -63,11 +63,11 @@ public class SeguimientoDto {
         this.fecha = fecha;
     }
 
-    public Double getAvance() {
+    public Integer getAvance() {
         return avance;
     }
 
-    public void setAvance(Double avance) {
+    public void setAvance(Integer avance) {
         this.avance = avance;
     }
 

@@ -12,12 +12,15 @@ import WebServiceTarea2.util.Respuesta;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import static org.jboss.weld.logging.BeanLogger.LOG;
 
 /**
  *
@@ -26,86 +29,77 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class ActividadesService {
+    private static final Logger LOG = Logger.getLogger(ActividadesService.class.getName());//imprime el error en payara
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em ;
     
     
-    //revisar por que recive long y no se si puede dar fallo en algun momento
-    public Respuesta getActividad(long id) {
+   public Respuesta getActividadeses() {
         try {
-            Query query = em.createNamedQuery("Actividades.findByActId", Actividades.class);
-            query.setParameter("actId", id);
-            
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Actividades", new ActividadesDto((Actividades) query.getSingleResult()));
+            Query qryActividades = em.createNamedQuery("Actividad.findAll", Actividades.class);
+            List<Actividades> Actividades = qryActividades.getResultList();
+            List<ActividadesDto> Actividadeses = new ArrayList<>();
+            for (Actividades actividades : Actividades) {
+                Actividadeses.add(new ActividadesDto(actividades));
+            }
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Actividades", Actividadeses);
+
         } catch (NoResultException ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un actividad con las credenciales ingresadas", "validar actividad No result exception");
-        } catch (Exception es) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error con la consulta", "Error desconocido Exception");
-        }
-    }
-
-    public Respuesta cargarActividades() {
-        try {
-            Query query = em.createNamedQuery("Actividades.findAll");
-            List<Actividades> actividadesList = query.getResultList();
-            List<ActividadesDto> actividadesDtoList = new ArrayList<>();
-            for (Actividades actividades : actividadesList) {
-                actividadesDtoList.add(new ActividadesDto(actividades));
-            }
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Actividadeses", actividadesDtoList);
-        } catch (NoResultException ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no existen actividadeses en este momento", "No ResultException");
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existen Actividadess con los criterios ingresados.", "getActividadess NoResultException");
         } catch (Exception ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "error desconocido", "excepton");
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Actividades.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Actividades.", "getActividades " + ex.getMessage());
         }
     }
 
-    public Respuesta GuardarActividades(ActividadesDto actividadesDto) {
+    public Respuesta guardarActividades(ActividadesDto ActividadesDto) {
         try {
-            Actividades actividades;
-            if (actividadesDto.getId()!= null && actividadesDto.getId() > 0) {
-                actividades = em.find(Actividades.class, actividadesDto.getId());
-                if (actividades == null) {
-                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontro el empleado a modificar", "guardar empleado NoResult");
+            Actividades Actividades;
+            if (ActividadesDto.getId()!= null && ActividadesDto.getId() > 0) {
+                Actividades = em.find(Actividades.class, ActividadesDto.getId());
+
+                if (Actividades == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encrontró el Actividades a modificar.", "guardarActividades NoResultException");
                 }
-                actividades.actualizarActividades(actividadesDto);
-                em.persist(actividades);
+
+                Actividades.actualizarActividades(ActividadesDto);
+                Actividades = em.merge(Actividades);
+                
             } else {
-                actividades = new Actividades(actividadesDto);
-                em.persist(actividades);
+                Actividades = new Actividades(ActividadesDto);
+                em.persist(Actividades);
             }
+
             em.flush();
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "actividades", new ActividadesDto(actividades));
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "Actividades guardado exitosamente", "", "Actividades", new ActividadesDto(Actividades));
         } catch (Exception ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el empleado", "guardar empleado");
+            LOG.log(Level.SEVERE, "Ocurrio un error al guardar el Actividades.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el Actividades.", "guardarActividades " + ex.getMessage());
         }
-
     }
 
-    public Respuesta eliminarAdmnistrador(Long id) {
+    public Respuesta eliminarActividades(Long id) {
         try {
-            Actividades actividades;
-            if (id != 0 && id > 0) {
-                actividades = em.find(Actividades.class, id);
-                if (actividades == null) {
-                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no se encontro el actividades que desea eliminar", "Objetivo a eliminar no encontrado");
-
+            //Empleado empleado;
+            Actividades Actividades;
+            if (id != null && id > 0) {
+                Actividades = em.find(Actividades.class, id);
+                if (Actividades == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontró el Actividades a eliminar.", "EliminarActividades NoResultException");
                 }
-                em.remove(actividades);
-
+                em.remove(Actividades);
             } else {
-                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Debe de seleccionar un empleado a eliminar ", "no se entro un id valido");
+                return new Respuesta(false, CodigoRespuesta.ERROR_CLIENTE, "Debe cargar el Actividades a eliminar.", "EliminarActividades NoResultException");
             }
-            em.flush();
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "");
-
         } catch (Exception ex) {
-            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {// relaciones con otras entidades
-                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "El Actividades tiene relaciones con otros registros, no se pudo eliminar", "depedenciade entidades");
+            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {
+                return new Respuesta(false, CodigoRespuesta.ERROR_PERMISOS, "No se puede eliminar el Actividades porque tiene relaciones con otros registros.", "EliminarActividades " + ex.getMessage());
             }
-            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
+            Logger.getLogger(ActividadesService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el Actividades.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Actividades.", "EliminarActividades " + ex.getMessage());
         }
     }
 }
-
-

@@ -6,6 +6,7 @@
 package WebServiceTarea2.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,6 +40,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Seguimiento.findBySegVersion", query = "SELECT s FROM Seguimiento s WHERE s.segVersion = :segVersion")})
 public class Seguimiento implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "SEG_AVANCE")
+    private Integer segAvance;
+    @Basic(optional = false)
+    @Column(name = "SEG_VERSION")
+    private Long segVersion;
+    @JoinColumn(name = "ACT_PRO", referencedColumnName = "PRO_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Proyecto actPro;
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -51,15 +62,6 @@ public class Seguimiento implements Serializable {
     @Column(name = "SEG_FECHA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date segFecha;
-    @Basic(optional = false)
-    @Column(name = "SEG_AVANCE")
-    private Double segAvance;
-    @Basic(optional = false)
-    @Column(name = "SEG_VERSION")
-    private Long segVersion;
-    @JoinColumn(name = "PRY_ID", referencedColumnName = "PRY_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Proyecto pryId;
 
     public Seguimiento() {
     }
@@ -68,7 +70,7 @@ public class Seguimiento implements Serializable {
         this.segId = segId;
     }
 
-    public Seguimiento(Long segId, Date segFecha, Double segAvance, Long segVersion) {
+    public Seguimiento(Long segId, Date segFecha, Integer segAvance, Long segVersion) {
         this.segId = segId;
         this.segFecha = segFecha;
         this.segAvance = segAvance;
@@ -80,7 +82,7 @@ public class Seguimiento implements Serializable {
         this.segFecha = seg.getFecha();
         this.segId  = seg.getId();
         this.segVersion = seg.getVersion();
-        this.pryId = new Proyecto(seg.getProyecto());
+        //this.actPro = new Proyecto(seg.getProyecto());
         
     }
     public Seguimiento(SeguimientoDto seg){
@@ -103,11 +105,11 @@ public class Seguimiento implements Serializable {
         this.segFecha = segFecha;
     }
 
-    public Double getSegAvance() {
+    public Integer getSegAvance() {
         return segAvance;
     }
 
-    public void setSegAvance(Double segAvance) {
+    public void setSegAvance(Integer segAvance) {
         this.segAvance = segAvance;
     }
 
@@ -119,13 +121,13 @@ public class Seguimiento implements Serializable {
         this.segVersion = segVersion;
     }
 
-    public Proyecto getPryId() {
-        return pryId;
+    /*public Proyecto getPryId() {
+        return actPro;
     }
 
     public void setPryId(Proyecto pryId) {
-        this.pryId = pryId;
-    }
+        this.actPro = pryId;
+    }*/
 
     @Override
     public int hashCode() {
@@ -150,6 +152,15 @@ public class Seguimiento implements Serializable {
     @Override
     public String toString() {
         return "WebServiceTarea2.model.Seguimiento[ segId=" + segId + " ]";
+    }
+
+   
+    public Proyecto getActPro() {
+        return actPro;
+    }
+
+    public void setActPro(Proyecto actPro) {
+        this.actPro = actPro;
     }
     
 }

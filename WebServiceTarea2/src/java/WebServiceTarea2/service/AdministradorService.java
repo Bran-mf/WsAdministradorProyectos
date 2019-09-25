@@ -36,50 +36,37 @@ public class AdministradorService {
     private EntityManager em;
 
     private static final Logger LOG = Logger.getLogger(AdministradorService.class.getName());
-     
-    /*public Administrador getAdmin(String usu, String contra){
+    
+    public Respuesta validarAdministrador(String usuario, String contrasena) { 
+        try {
+            Query qryActividad = em.createNamedQuery("Administrador.findByUsuClave", Administrador.class);
+            qryActividad.setParameter("adnUsuario", usuario);
+            qryActividad.setParameter("adnContrasena", contrasena);
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administrador", new AdministradorDto((Administrador) qryActividad.getSingleResult()));
+
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un usuario con las credenciales ingresadas.", "validarUsuario NoResultException");
+        } catch (NonUniqueResultException ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el usuario.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el usuario.", "validarUsuario NonUniqueResultException");
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el usuario.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el usuario.", "validarUsuario " + ex.getMessage());
+        }
+    }
+    
+    public Administrador getAdmin(String usu, String contra){
         Administrador admin; 
-        Query qryUsuContra = em.createNamedQuery("Administrador.findByAdmClave",Administrador.class);
-        qryUsuContra.setParameter("admClave",contra);
-        qryUsuContra.setParameter("admUsuario",usu);
+        Query qryUsuContra = em.createNamedQuery("Administrador.findByAdnUsClave",Administrador.class);
+        qryUsuContra.setParameter("usu",usu);
+        qryUsuContra.setParameter("contra",contra);
         try {
             admin = (Administrador) qryUsuContra.getSingleResult();
         } catch (NoResultException ex) {
             admin = null;
         }
         return admin; 
-    }
-    
-    public Administrador getAdmin(Long adminId){
-        Administrador admin;
-        Query qry = em.createNamedQuery("Administrador.findByAdmId", Administrador.class);
-        qry.setParameter("admId", adminId);
-        try{
-            admin = (Administrador) qry.getSingleResult();
-        } catch(NoResultException ex){
-            admin = null;
-        }
-        return admin;
-    }*/
-    
-    public Respuesta validarAdministrador(String usuario, String clave) {
-        try {
-            //Se genera la QUERY
-            Query qryActividad = em.createNamedQuery("Administrador.findByUsuClave", Administrador.class);
-            // Se le setean parametros a la QUERY
-            qryActividad.setParameter("admClave", clave);
-            qryActividad.setParameter("admUsuario", usuario);
-            // Obtengo el Administrador desde BD y se lo seteo en el objeto resultado de la rspuesta con sus respectivos parámetros
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "AdministradorDto", (AdministradorDto) new AdministradorDto((Administrador) qryActividad.getSingleResult()));
-        } catch (NoResultException ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un Administrador con las credenciales ingresadas.", "validarAdministrador NoResultException");
-        } catch (NonUniqueResultException ex) {
-            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Administrador.", ex);
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Administrador.", "validarAdministrador NonUniqueResultException");
-        } catch (Exception ex) {
-            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Administrador.", ex);
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Administrador.", "validarAdministrador " + ex.getMessage());
-        }
     }
     
     public Respuesta getAdministradores() {
@@ -104,8 +91,8 @@ public class AdministradorService {
     public Respuesta guardarAdministrador(AdministradorDto AdministradorDto) {
         try {
             Administrador Administrador;
-            if (AdministradorDto.getID()!= null && AdministradorDto.getID() > 0) {
-                Administrador = em.find(Administrador.class, AdministradorDto.getID());
+            if (AdministradorDto.getAdnId()!= null && AdministradorDto.getAdnId() > 0) {
+                Administrador = em.find(Administrador.class, AdministradorDto.getAdnId());
                 if (Administrador == null) {
                     return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encrontró el Administrador a modificar", "guardarAdministrador NoResultException");
                 }
@@ -113,8 +100,8 @@ public class AdministradorService {
                 Administrador = em.merge(Administrador);
             } else {
                 Administrador = new Administrador(AdministradorDto);
-                Administrador.setAdmEstado("i");
-                Administrador.setAdmVersion(new Long(1));
+                Administrador.setAdnEstado("A");
+                Administrador.setAdnVersion(new Long(1));
                 em.persist(Administrador);
             }
             em.flush();
@@ -145,6 +132,24 @@ public class AdministradorService {
             }
             Logger.getLogger(AdministradorService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el Administrador.", ex);
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Administrador.", "EliminarAdministrador " + ex.getMessage());
+        }
+    }
+    
+     public Respuesta getAdministrador(Long id) {
+        try {
+            Query qryAdmin = em.createNamedQuery("Administrador.findByAdnId", Administrador.class);
+            qryAdmin.setParameter("adnId", id);
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administrador", new AdministradorDto((Administrador) qryAdmin.getSingleResult()));
+
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un administrador con el código ingresado.", "getAdministrador NoResultException");
+        } catch (NonUniqueResultException ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Administrador.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el administrador.", "getAdministrador NonUniqueResultException");
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el empleado.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el empleado.", "getEmpleado " + ex.getMessage());
         }
     }
     

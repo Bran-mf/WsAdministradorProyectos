@@ -12,6 +12,8 @@ import WebServiceTarea2.util.Respuesta;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,83 +28,77 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 public class SeguimientoService {
+    private static final Logger LOG = Logger.getLogger(SeguimientoService.class.getName());//imprime el error en payara
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em;
     
     
-     public Respuesta getSeguimiento(long id) {
+     public Respuesta getSeguimientos() {
         try {
-            Query query = em.createNamedQuery("Seguimientoes.findByActId", Seguimiento.class);
-            query.setParameter("actId", id);
-            
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Seguimientoes", new SeguimientoDto((Seguimiento) query.getSingleResult()));
+            Query qrySeguimiento = em.createNamedQuery("Seguimiento.findAll", Seguimiento.class);
+            List<Seguimiento> Seguimientos = qrySeguimiento.getResultList();
+            List<SeguimientoDto> SeguimientosDto = new ArrayList<>();
+            for (Seguimiento Seguimiento : Seguimientos) {
+                SeguimientosDto.add(new SeguimientoDto(Seguimiento));
+            }
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Seguimientos", SeguimientosDto);
+
         } catch (NoResultException ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un seguimiento con las credenciales ingresadas", "validar seguimiento No result exception");
-        } catch (Exception es) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error con la consulta", "Error desconocido Exception");
-        }
-    }
-
-    public Respuesta cargarSeguimientoeses() {
-        try {
-            Query query = em.createNamedQuery("Seguimientoes.findAll");
-            List<Seguimiento> seguimientoesList = query.getResultList();
-            List<SeguimientoDto> seguimientoesDtoList = new ArrayList<>();
-            for (Seguimiento seguimientoes : seguimientoesList) {
-                seguimientoesDtoList.add(new SeguimientoDto(seguimientoes));
-            }
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Seguimientoeses", seguimientoesDtoList);
-        } catch (NoResultException ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no existen seguimientoeses en este momento", "No ResultException");
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existen Seguimientos con los criterios ingresados.", "getSeguimientos NoResultException");
         } catch (Exception ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "error desconocido", "excepton");
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Seguimiento.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Seguimiento.", "getSeguimiento " + ex.getMessage());
         }
     }
 
-    public Respuesta GuardarSeguimientoes(SeguimientoDto seguimientoesDto) {
+    public Respuesta guardarSeguimiento(SeguimientoDto SeguimientoDto) {
         try {
-            Seguimiento seguimientoes;
-            if (seguimientoesDto.getId()!= null && seguimientoesDto.getId() > 0) {
-                seguimientoes = em.find(Seguimiento.class, seguimientoesDto.getId());
-                if (seguimientoes == null) {
-                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontro el empleado a modificar", "guardar empleado NoResult");
+            Seguimiento Seguimiento;
+            if (SeguimientoDto.getId()!= null && SeguimientoDto.getId() > 0) {
+                Seguimiento = em.find(Seguimiento.class, SeguimientoDto.getId());
+
+                if (Seguimiento == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encrontró el Seguimiento a modificar.", "guardarSeguimiento NoResultException");
                 }
-                seguimientoes.actualizarSeguimiento(seguimientoesDto);
-                em.persist(seguimientoes);
+
+                Seguimiento.actualizarSeguimiento(SeguimientoDto);
+                Seguimiento = em.merge(Seguimiento);
+                
             } else {
-                seguimientoes = new Seguimiento(seguimientoesDto);
-                em.persist(seguimientoes);
+                Seguimiento = new Seguimiento(SeguimientoDto);
+                em.persist(Seguimiento);
             }
+
             em.flush();
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "seguimientoes", new SeguimientoDto(seguimientoes));
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "Seguimiento guardado exitosamente", "", "Seguimiento", new SeguimientoDto(Seguimiento));
         } catch (Exception ex) {
-            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el empleado", "guardar empleado");
+            LOG.log(Level.SEVERE, "Ocurrio un error al guardar el Seguimiento.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al guardar el Seguimiento.", "guardarSeguimiento " + ex.getMessage());
         }
-
     }
 
-    public Respuesta eliminarAdmnistrador(Long id) {
+    public Respuesta eliminarSeguimiento(Long id) {
         try {
-            Seguimiento seguimientoes;
-            if (id != 0 && id > 0) {
-                seguimientoes = em.find(Seguimiento.class, id);
-                if (seguimientoes == null) {
-                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "no se encontro el seguimientoes que desea eliminar", "Objetivo a eliminar no encontrado");
-
+            //Empleado empleado;
+            Seguimiento Seguimiento;
+            if (id != null && id > 0) {
+                Seguimiento = em.find(Seguimiento.class, id);
+                if (Seguimiento == null) {
+                    return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No se encontró el Seguimiento a eliminar.", "EliminarSeguimiento NoResultException");
                 }
-                em.remove(seguimientoes);
-
+                em.remove(Seguimiento);
             } else {
-                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Debe de seleccionar un empleado a eliminar ", "no se entro un id valido");
+                return new Respuesta(false, CodigoRespuesta.ERROR_CLIENTE, "Debe cargar el Seguimiento a eliminar.", "EliminarSeguimiento NoResultException");
             }
-            em.flush();
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "");
-
         } catch (Exception ex) {
-            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {// relaciones con otras entidades
-                return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "El Seguimientoes tiene relaciones con otros registros, no se pudo eliminar", "depedenciade entidades");
+            if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {
+                return new Respuesta(false, CodigoRespuesta.ERROR_PERMISOS, "No se puede eliminar el Seguimiento porque tiene relaciones con otros registros.", "EliminarSeguimiento " + ex.getMessage());
             }
-            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"error desconocido","excepcion");
+            Logger.getLogger(SeguimientoService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el Seguimiento.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Seguimiento.", "EliminarSeguimiento " + ex.getMessage());
         }
     }
 }
