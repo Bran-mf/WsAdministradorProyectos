@@ -25,16 +25,16 @@ import static org.jboss.weld.logging.BeanLogger.LOG;
 /**
  *
  * @author Bran
- */
+ *//*
 @Stateless
-@LocalBean
+@LocalBean*/
 public class ActividadesService {
-    private static final Logger LOG = Logger.getLogger(ActividadesService.class.getName());//imprime el error en payara
+    /*private static final Logger LOG = Logger.getLogger(ActividadesService.class.getName());//imprime el error en payara
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em ;
     
     
-   public Respuesta getActividadeses() {
+   public Respuesta getActividades() {
         try {
             Query qryActividades = em.createNamedQuery("Actividad.findAll", Actividades.class);
             List<Actividades> Actividades = qryActividades.getResultList();
@@ -102,8 +102,6 @@ public class ActividadesService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Actividades.", "EliminarActividades " + ex.getMessage());
         }
     }
-
-}
-
+*/
 }
 

@@ -24,11 +24,11 @@ import javax.persistence.Query;
 /**
  *
  * @author Jose Pablo Bermudez
- */
+ *//*
 @Stateless
-@LocalBean
+@LocalBean*/
 public class SeguimientoService {
-    private static final Logger LOG = Logger.getLogger(SeguimientoService.class.getName());//imprime el error en payara
+    /*private static final Logger LOG = Logger.getLogger(SeguimientoService.class.getName());//imprime el error en payara
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em;
     
@@ -100,5 +100,5 @@ public class SeguimientoService {
             Logger.getLogger(SeguimientoService.class.getName()).log(Level.SEVERE, "Ocurrio un error al guardar el Seguimiento.", ex);
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Seguimiento.", "EliminarSeguimiento " + ex.getMessage());
         }
-    }
+    }*/
 }

@@ -88,126 +88,128 @@ public class Administrador implements Serializable {
     public Administrador() {
     }
 
-    public Administrador(Long admId) {
-        this.adnId = admId;
+    public Administrador(Long adnId) {
+        this.adnId = adnId;
     }
 
-    public Administrador(Long admId, String AdmNombre, String admPapellido, String admSapellido, String cedula,String admCorreo, String AdmUsuario, String AdmClave, String AdmEstado, Long AdmVersion) {
-        this.adnId = admId;
-        this.adnNombre = AdmNombre;
-        this.adnPapellido = admPapellido;
-        this.adnSapellido = admSapellido;
-        this.adnCedula = cedula;
-        this.adnCorreo = admCorreo;
-        this.adnUsuario = AdmUsuario;
-        this.adnContrasena = AdmClave;
-        this.adnEstado = AdmEstado;
-        this.adnVersion = AdmVersion;
-        
+    public Administrador(Long adnId, String adnNombre, String adnPapellido, String adnSapellido, String adnCedula, String adnCorreo, String adnUsuario, String adnContrasena, String adnEstado, Long adnVersion) {
+        this.adnId = adnId;
+        this.adnNombre = adnNombre;
+        this.adnPapellido = adnPapellido;
+        this.adnSapellido = adnSapellido;
+        this.adnCedula = adnCedula;
+        this.adnCorreo = adnCorreo;
+        this.adnUsuario = adnUsuario;
+        this.adnContrasena = adnContrasena;
+        this.adnEstado = adnEstado;
+        this.adnVersion = adnVersion;
     }
-    public Administrador(AdministradorDto AdministradorDto) {
-        this.adnId = AdministradorDto.getAdnId();
-        actualizarAdministrador(AdministradorDto);
+    public Administrador(AdministradorDto admin) {
+        this.adnId = admin.getAdnId();
+        this.actualizar(admin);
     }
-
-    public void actualizarAdministrador(AdministradorDto adm){
-        this.adnNombre = adm.getAdnNombre();
-        this.adnPapellido = adm.getAdnPapellido();
-        this.adnSapellido = adm.getAdnSapellido();
-        this.adnCedula = adm.getAdnCedula();
-        this.adnCorreo = adm.getAdnCorreo();
-        this.adnUsuario = adm.getAdnUsuario();
-        this.adnContrasena = adm.getAdnContrasena();
-        this.adnEstado = adm.getAdnEstado();
-        this.adnVersion = adm.getAdnVersion();
-        //for (Proyecto p : this.proyectoList){ p.setProAdministrador(this);}
-        
+    public void actualizar(AdministradorDto admin) {
+        this.adnNombre = admin.getAdnNombre();
+        this.adnPapellido = admin.getAdnPapellido();
+        this.adnSapellido = admin.getAdnSapellido();
+        this.adnCedula = admin.getAdnCedula();
+        this.adnCorreo = admin.getAdnCorreo();
+        this.adnUsuario = admin.getAdnUsuario();
+        this.adnContrasena = admin.getAdnContrasena();
+        this.adnEstado = admin.getAdnEstado();
+        this.adnVersion = admin.getAdnVersion();
+        this.proyectoList = admin.getProyectosToDB();
+        //for (Proyecto p : this.proyectoList){ p.setProAdministrador(this); }
     }
-
-
-        
-    }
-
-
+    
     public Long getAdnId() {
         return adnId;
     }
 
-    public void setAdnId(Long admId) {
-        this.adnId = admId;
+    public void setAdnId(Long adnId) {
+        this.adnId = adnId;
     }
 
     public String getAdnNombre() {
         return adnNombre;
     }
 
-    public String getAdnCedula() {
-        return adnCedula;
-    }
-
-    public void setAdnCedula(String admCedula) {
-        this.adnCedula = admCedula;
-    }
-    
-    public void setAdnNombre(String AdmNombre) {
-        this.adnNombre = AdmNombre;
+    public void setAdnNombre(String adnNombre) {
+        this.adnNombre = adnNombre;
     }
 
     public String getAdnPapellido() {
         return adnPapellido;
     }
 
-    public void setAdnPapellido(String admPapellido) {
-        this.adnPapellido = admPapellido;
+    public void setAdnPapellido(String adnPapellido) {
+        this.adnPapellido = adnPapellido;
     }
 
     public String getAdnSapellido() {
         return adnSapellido;
     }
 
-    public void setAdnSapellido(String admSapellido) {
-        this.adnSapellido = admSapellido;
+    public void setAdnSapellido(String adnSapellido) {
+        this.adnSapellido = adnSapellido;
+    }
+
+    public String getAdnCedula() {
+        return adnCedula;
+    }
+
+    public void setAdnCedula(String adnCedula) {
+        this.adnCedula = adnCedula;
     }
 
     public String getAdnCorreo() {
         return adnCorreo;
     }
 
-    public void setAdnCorreo(String admCorreo) {
-        this.adnCorreo = admCorreo;
+    public void setAdnCorreo(String adnCorreo) {
+        this.adnCorreo = adnCorreo;
     }
 
     public String getAdnUsuario() {
         return adnUsuario;
     }
 
-    public void setAdnUsuario(String AdmUsuario) {
-        this.adnUsuario = AdmUsuario;
+    public void setAdnUsuario(String adnUsuario) {
+        this.adnUsuario = adnUsuario;
     }
 
     public String getAdnContrasena() {
         return adnContrasena;
     }
 
-    public void setAdnContrasena(String AdmClave) {
-        this.adnContrasena = AdmClave;
+    public void setAdnContrasena(String adnContrasena) {
+        this.adnContrasena = adnContrasena;
     }
 
     public String getAdnEstado() {
         return adnEstado;
     }
 
-    public void setAdnEstado(String AdmEstado) {
-        this.adnEstado = AdmEstado;
+    public void setAdnEstado(String adnEstado) {
+        this.adnEstado = adnEstado;
     }
 
     public Long getAdnVersion() {
         return adnVersion;
     }
 
-    public void setAdnVersion(Long AdmVersion) {
-        this.adnVersion = AdmVersion;
+    public void setAdnVersion(Long adnVersion) {
+        this.adnVersion = adnVersion;
     }
+    
+    public List<Proyecto> getProyectoList() {
+        return proyectoList;
+    }
+
+    public void setProyectoList(List<Proyecto> proyectoList) {
+        this.proyectoList = proyectoList;
+    }
+    
 
     @Override
     public int hashCode() {
@@ -231,22 +233,7 @@ public class Administrador implements Serializable {
 
     @Override
     public String toString() {
-        return "WebServiceTarea2.model.Administrador[ admId=" + adnId + " ]";
+        return "webservice.Administrador[ adnId=" + adnId + " ]";
     }
-
-
-    @XmlTransient
-
-    public List<Proyecto> getProyectoList() {
-        return proyectoList;
-    }
-
-    public void setProyectoList(List<Proyecto> proyectoList) {
-        this.proyectoList = proyectoList;
-    }
-
-
+    
 }
-
-}
-

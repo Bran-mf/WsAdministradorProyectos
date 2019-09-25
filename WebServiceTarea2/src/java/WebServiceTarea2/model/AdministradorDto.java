@@ -18,8 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "AdministradorDto")
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public class AdministradorDto {
-    
-   private Long adnId;
+    private Long adnId;
     private String adnNombre;
     private String adnPapellido;
     private String adnSapellido;
@@ -29,14 +28,14 @@ public class AdministradorDto {
     private String adnContrasena;
     private String adnEstado;
     private Long adnVersion;
-
     private List <ProyectoDto> proyectos;
-    
+
     public AdministradorDto() {
-         proyectos = new ArrayList<>();
+        proyectos = new ArrayList<>();
     }
     
     public AdministradorDto(Long adnId, String adnNombre, String adnPapellido, String adnSapellido, String adnCedula, String adnCorreo, String adnUsuario, String adnContrasena, String adnEstado, Long adnVersion) {
+        this();
         this.adnId = adnId;
         this.adnNombre = adnNombre;
         this.adnPapellido = adnPapellido;
@@ -48,29 +47,9 @@ public class AdministradorDto {
         this.adnEstado = adnEstado;
         this.adnVersion = adnVersion;
     }
-    
+
     public AdministradorDto(Administrador admin) {
         this();
-
-
-    public AdministradorDto() {
-    }
-    
-    public AdministradorDto(Long adnId, String adnNombre, String adnPapellido, String adnSapellido, String adnCedula, String adnCorreo, String adnUsuario, String adnContrasena, String adnEstado, Long adnVersion) {
-        this.adnId = adnId;
-        this.adnNombre = adnNombre;
-        this.adnPapellido = adnPapellido;
-        this.adnSapellido = adnSapellido;
-        this.adnCedula = adnCedula;
-        this.adnCorreo = adnCorreo;
-        this.adnUsuario = adnUsuario;
-        this.adnContrasena = adnContrasena;
-        this.adnEstado = adnEstado;
-        this.adnVersion = adnVersion;
-    }
-    
-    public AdministradorDto(Administrador admin) {
-
         this.adnCedula = admin.getAdnCedula();
         this.adnContrasena = admin.getAdnContrasena();
         this.adnCorreo = admin.getAdnCorreo();
@@ -81,7 +60,6 @@ public class AdministradorDto {
         this.adnSapellido = admin.getAdnSapellido();
         this.adnUsuario = admin.getAdnUsuario();
         this.adnVersion = admin.getAdnVersion();
-
         if(admin.getProyectoList() != null){
             for (Proyecto p : admin.getProyectoList()){
                 ProyectoDto proy = new ProyectoDto(p);
@@ -89,28 +67,13 @@ public class AdministradorDto {
                 this.proyectos.add(proy);
             }
         }
-    }
-
-    public void addProyecto(ProyectoDto p){
-        this.proyectos.add(p);
-    }
-
-    public List<ProyectoDto> getProyectos() {
-        return proyectos;
-    }
-    
-    public List<Proyecto> getProyectosToDB(){
-        List<Proyecto> prs = new ArrayList<>();
-        for (ProyectoDto p : proyectos){
-            prs.add(new Proyecto(p));
-        }
-        return prs;
-    }
-
-    public void setProyectos(List<ProyectoDto> proyectos) {
-        this.proyectos = proyectos;
-    }
-
+        /*if(admin.getProyectoList()!=null && !admin.getProyectoList().isEmpty()){
+            admin.getProyectoList().forEach(x->{
+                ProyectoDto pro = new ProyectoDto(x);
+                pro.setProAdmin(this);
+                this.proyectos.add(pro);
+            });
+        }*/
     }
 
     public Long getAdnId() {
@@ -192,4 +155,25 @@ public class AdministradorDto {
     public void setAdnVersion(Long adnVersion) {
         this.adnVersion = adnVersion;
     }
+    
+    public void addProyecto(ProyectoDto p){
+        this.proyectos.add(p);
+    }
+
+    public List<ProyectoDto> getProyectos() {
+        return proyectos;
+    }
+    
+    public List<Proyecto> getProyectosToDB(){
+        List<Proyecto> prs = new ArrayList<>();
+        for (ProyectoDto p : proyectos){
+            prs.add(new Proyecto(p));
+        }
+        return prs;
+    }
+
+    public void setProyectos(List<ProyectoDto> proyectos) {
+        this.proyectos = proyectos;
+    }
+    
 }
