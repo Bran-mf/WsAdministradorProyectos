@@ -55,6 +55,49 @@ public class AdministradorService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el usuario.", "validarUsuario " + ex.getMessage());
         }
     }
+
+    public Administrador getAdmin(String usu, String contra){
+        Administrador admin; 
+        Query qryUsuContra = em.createNamedQuery("Administrador.findByAdnUsClave",Administrador.class);
+        qryUsuContra.setParameter("usu",usu);
+        qryUsuContra.setParameter("contra",contra);
+        try {
+            admin = (Administrador) qryUsuContra.getSingleResult();
+        } catch (NoResultException ex) {
+            admin = null;
+
+    public Administrador getAdmin(Long adminId){
+        Administrador admin;
+        Query qry = em.createNamedQuery("Administrador.findByAdmId", Administrador.class);
+        qry.setParameter("admId", adminId);
+        try{
+            admin = (Administrador) qry.getSingleResult();
+        } catch(NoResultException ex){
+            admin = null;
+        }
+        return admin;
+    }*/
+    
+    public Respuesta validarAdministrador(String usuario, String contrasena) { 
+        try {
+            Query qryActividad = em.createNamedQuery("Administrador.findByUsuClave", Administrador.class);
+            qryActividad.setParameter("adnUsuario", usuario);
+            qryActividad.setParameter("adnContrasena", contrasena);
+
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Administrador", new AdministradorDto((Administrador) qryActividad.getSingleResult()));
+
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un usuario con las credenciales ingresadas.", "validarUsuario NoResultException");
+        } catch (NonUniqueResultException ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el usuario.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el usuario.", "validarUsuario NonUniqueResultException");
+        } catch (Exception ex) {
+            LOG.log(Level.SEVERE, "Ocurrio un error al consultar el usuario.", ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el usuario.", "validarUsuario " + ex.getMessage());
+
+        }
+        return admin; 
+    }
     
     public Administrador getAdmin(String usu, String contra){
         Administrador admin; 

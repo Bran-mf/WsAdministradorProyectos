@@ -111,6 +111,25 @@ public class WS {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Error guardando usuario", ex.getMessage());
         }
     }
+
+    /**
+     * Web service operation
+     * @param proyecto
+     * @return 
+     */
+    @WebMethod(operationName = "guardarProyecto")
+    public Respuesta guardarProyecto(@WebParam(name = "proyecto") ProyectoDto proyecto) {
+        //TODO write your implementation code here:
+        try {
+            Respuesta respuesta = proyectoService.guardarProyecto(proyecto);
+            return respuesta;
+        } catch (Exception ex) {
+            Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Error guardando Proyecto", ex.getMessage());
+        }
+    }
+
+
     /**
      * Web service operation
      * @param ID
@@ -131,6 +150,7 @@ public class WS {
      * Web service operation
      * @param adminPorPro
      * @return 
+
      */
   
 
@@ -139,6 +159,16 @@ public class WS {
      * @param actividad
      * @return 
      */
+
+     */
+  
+
+    /**
+     * Web service operation
+     * @param actividad
+     * @return 
+     */
+
     @WebMethod(operationName = "guardarActividad")
     public Respuesta guardarActividad(@WebParam(name = "actividad") ActividadesDto actividad) {
         //TODO write your implementation code here:
@@ -157,6 +187,18 @@ public class WS {
      * @param ID
      * @return 
      */
+
+   /* @WebMethod(operationName = "elminarActividad")
+    public Respuesta elminarActividad(@WebParam(name = "ID") Long ID) {
+        try {
+            Respuesta respuesta = actividadService.eliminarActividad(ID);
+            return respuesta;
+        } catch (Exception ex) {
+            Logger.getLogger(ws.class.getName()).log(Level.SEVERE, null, ex);
+            return new Respuesta(false,CodigoRespuesta.ERROR_CLIENTE, "Error al eliminar la Actividad", ex.getMessage());
+        }
+    }*/
+
 
     /**
      * Web service operation
@@ -207,5 +249,8 @@ public class WS {
             return new Respuesta(false,CodigoRespuesta.ERROR_CLIENTE, "Error al eliminar la Actividad", ex.getMessage());
         }
     }
-    
+
 }
+
+}
+

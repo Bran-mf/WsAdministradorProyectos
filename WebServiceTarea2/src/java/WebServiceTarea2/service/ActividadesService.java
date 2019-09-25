@@ -102,4 +102,8 @@ public class ActividadesService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Actividades.", "EliminarActividades " + ex.getMessage());
         }
     }
+
 }
+
+}
+

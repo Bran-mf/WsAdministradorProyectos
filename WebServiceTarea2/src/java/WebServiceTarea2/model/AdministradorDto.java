@@ -29,6 +29,7 @@ public class AdministradorDto {
     private String adnContrasena;
     private String adnEstado;
     private Long adnVersion;
+
     private List <ProyectoDto> proyectos;
     
     public AdministradorDto() {
@@ -50,6 +51,26 @@ public class AdministradorDto {
     
     public AdministradorDto(Administrador admin) {
         this();
+
+
+    public AdministradorDto() {
+    }
+    
+    public AdministradorDto(Long adnId, String adnNombre, String adnPapellido, String adnSapellido, String adnCedula, String adnCorreo, String adnUsuario, String adnContrasena, String adnEstado, Long adnVersion) {
+        this.adnId = adnId;
+        this.adnNombre = adnNombre;
+        this.adnPapellido = adnPapellido;
+        this.adnSapellido = adnSapellido;
+        this.adnCedula = adnCedula;
+        this.adnCorreo = adnCorreo;
+        this.adnUsuario = adnUsuario;
+        this.adnContrasena = adnContrasena;
+        this.adnEstado = adnEstado;
+        this.adnVersion = adnVersion;
+    }
+    
+    public AdministradorDto(Administrador admin) {
+
         this.adnCedula = admin.getAdnCedula();
         this.adnContrasena = admin.getAdnContrasena();
         this.adnCorreo = admin.getAdnCorreo();
@@ -60,6 +81,7 @@ public class AdministradorDto {
         this.adnSapellido = admin.getAdnSapellido();
         this.adnUsuario = admin.getAdnUsuario();
         this.adnVersion = admin.getAdnVersion();
+
         if(admin.getProyectoList() != null){
             for (Proyecto p : admin.getProyectoList()){
                 ProyectoDto proy = new ProyectoDto(p);
@@ -88,7 +110,9 @@ public class AdministradorDto {
     public void setProyectos(List<ProyectoDto> proyectos) {
         this.proyectos = proyectos;
     }
-    
+
+    }
+
     public Long getAdnId() {
         return adnId;
     }

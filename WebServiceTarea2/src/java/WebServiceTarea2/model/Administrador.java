@@ -124,7 +124,11 @@ public class Administrador implements Serializable {
         
     }
 
-    
+
+        
+    }
+
+
     public Long getAdnId() {
         return adnId;
     }
@@ -230,6 +234,9 @@ public class Administrador implements Serializable {
         return "WebServiceTarea2.model.Administrador[ admId=" + adnId + " ]";
     }
 
+
+    @XmlTransient
+
     public List<Proyecto> getProyectoList() {
         return proyectoList;
     }
@@ -238,4 +245,8 @@ public class Administrador implements Serializable {
         this.proyectoList = proyectoList;
     }
 
+
 }
+
+}
+

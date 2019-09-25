@@ -104,6 +104,7 @@ public class ProyectoService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Proyecto.", "EliminarProyecto " + ex.getMessage());
         }
     }
+
     public Respuesta getAdministrador(Long id) {
         try {
             Query qryproyecto = em.createNamedQuery("Proyecto.findByProId", Proyecto.class);
@@ -121,4 +122,6 @@ public class ProyectoService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el empleado.", "getEmpleado " + ex.getMessage());
         }
     }
+}
+
 }
