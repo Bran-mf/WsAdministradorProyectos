@@ -122,4 +122,23 @@ public class ProyectoService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el empleado.", "getEmpleado " + ex.getMessage());
         }
     }
+    public Respuesta buscarProPorFiltro(String nombre,String patrocinador,String estado){
+        try{
+            Query query  = em.createNamedQuery("Proyecto.findByFiltro");
+            query.setParameter("nombre", nombre);
+            query.setParameter("patrocinador", patrocinador);
+            query.setParameter("estado", estado);
+            List<Proyecto> listProyectos = query.getResultList();
+            List<ProyectoDto> listPoryectosDto = new ArrayList<>();
+            for(Proyecto pro:listProyectos){
+                listPoryectosDto.add(new ProyectoDto(pro));
+            }
+            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","",listPoryectosDto);
+            
+        }catch(NoResultException ex){
+            return new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"No se encontro ningun resultado","Error NoResultExcepion Servidor Service");
+        } catch(Exception ex){
+            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Ocurrio un error interno","Error Exception Servidor service");
+        }
+    }
 }
