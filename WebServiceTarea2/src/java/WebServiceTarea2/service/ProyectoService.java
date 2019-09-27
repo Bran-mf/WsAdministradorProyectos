@@ -37,7 +37,8 @@ public class ProyectoService {
     @PersistenceContext(unitName = "WebServiceTarea2PU")
     private EntityManager em;
     
-    public Respuesta getProyectos() {
+    
+    /*public Respuesta getProyectos() {
         try {
             Query qryProyecto = em.createNamedQuery("Proyecto.findAll", Proyecto.class);
             List<Proyecto> proyectos = qryProyecto.getResultList();
@@ -45,14 +46,25 @@ public class ProyectoService {
             for (Proyecto proyecto : proyectos) {
                 proyectosDto.add(new ProyectoDto(proyecto));
             }
-
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Proyectos", proyectosDto);
-
         } catch (NoResultException ex) {
             return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existen Proyectos con los criterios ingresados.", "getProyectos NoResultException");
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, "Ocurrio un error al consultar el Proyecto.", ex);
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el Proyecto.", "getProyecto " + ex.getMessage());
+        }
+    }*/
+    
+    public List<ProyectoDto> getProyectos() {
+        try {
+            Query qryProyectos = em.createNamedQuery("Proyecto.findAll", Proyecto.class);
+            List<ProyectoDto> proyectos = new ArrayList<>();
+            for(Object pro :qryProyectos.getResultList()){
+                proyectos.add(new ProyectoDto((Proyecto)pro));
+            }
+            return proyectos;   
+        } catch (Exception ex) {
+            return null;
         }
     }
 
@@ -104,13 +116,12 @@ public class ProyectoService {
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el Proyecto.", "EliminarProyecto " + ex.getMessage());
         }
     }
-
     public Respuesta getAdministrador(Long id) {
         try {
             Query qryproyecto = em.createNamedQuery("Proyecto.findByProId", Proyecto.class);
             qryproyecto.setParameter("proId", id);
 
-            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Proyectp", new ProyectoDto((Proyecto) qryproyecto.getSingleResult()));
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "Proyecto", new ProyectoDto((Proyecto) qryproyecto.getSingleResult()));
 
         } catch (NoResultException ex) {
             return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existe un Proyecto con el código ingresado.", "getProyecto NoResultException");
@@ -120,25 +131,6 @@ public class ProyectoService {
         } catch (Exception ex) {
             LOG.log(Level.SEVERE, "Ocurrio un error al consultar el empleado.", ex);
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al consultar el empleado.", "getEmpleado " + ex.getMessage());
-        }
-    }
-    public Respuesta buscarProPorFiltro(String nombre,String patrocinador,String estado){
-        try{
-            Query query  = em.createNamedQuery("Proyecto.findByFiltro");
-            query.setParameter("nombre", nombre);
-            query.setParameter("patrocinador", patrocinador);
-            query.setParameter("estado", estado);
-            List<Proyecto> listProyectos = query.getResultList();
-            List<ProyectoDto> listPoryectosDto = new ArrayList<>();
-            for(Proyecto pro:listProyectos){
-                listPoryectosDto.add(new ProyectoDto(pro));
-            }
-            return new Respuesta(true,CodigoRespuesta.CORRECTO,"","",listPoryectosDto);
-            
-        }catch(NoResultException ex){
-            return new Respuesta(false,CodigoRespuesta.ERROR_NOENCONTRADO,"No se encontro ningun resultado","Error NoResultExcepion Servidor Service");
-        } catch(Exception ex){
-            return new Respuesta(false,CodigoRespuesta.ERROR_INTERNO,"Ocurrio un error interno","Error Exception Servidor service");
         }
     }
 }
