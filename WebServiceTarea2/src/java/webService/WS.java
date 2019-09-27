@@ -128,7 +128,7 @@ public class WS {
         } catch (Exception ex) {
             Logger.getLogger(WS.class.getName()).log(Level.SEVERE, null, ex);
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Error guardando Proyecto", ex.getMessage());
-        }
+        }//
     }
 
     /**
